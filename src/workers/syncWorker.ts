@@ -14,13 +14,17 @@ new Worker('sync-queue', async (job) => {
   if (name === 'sync-pages') {
     console.log(`🔄 Syncing Facebook pages for company: ${data.companyId}`);
     await syncFacebookPages(data.companyId, data.userId);
+    console.log(`✅ Pages sync complete`);
   }
 
   if (name === 'sync-posts') {
     console.log(`📝 Syncing posts for company: ${data.companyId}`);
     await syncUserPosts(data.companyId, data.userId);
+    console.log(`✅ Posts sync complete`);
   }
 }, {
-  connection: redisConnection, // ✅ Using the ioredis instance
-  concurrency: 5,
+  connection: redisConnection,
+  concurrency: 1,           // ✅ One job at a time
+  lockDuration: 300000,     // ✅ Prevent early unlock
+  useWorkerThreads: false,  // ✅ Avoid thread race conditions
 });
