@@ -1,17 +1,18 @@
 // src\jobs\syncDispatcher.ts
-import { syncFacebookPages } from '../services/sync-services/pageService';
-// import other sync services like syncAdAccounts, syncCampaigns, etc.
+import { syncQueue } from '../queues/syncQueue';
 
 export async function syncDispatcher(companyId: string, userId: string) {
   try {
-    // 🔄 Sync each service
-    await syncFacebookPages(companyId, userId);
-    // await syncAdAccounts(companyId);
-    // await syncCampaigns(companyId);
-    // Add more syncs here...
+    console.log('🧾 Dispatching individual sync jobs to queue...');
 
-    console.log(`✅ Sync completed for company: ${companyId}`);
+    // First: sync pages
+    await syncQueue.add('sync-pages', { companyId, userId });
+
+    // Then: sync posts AFTER pages are queued
+    await syncQueue.add('sync-posts', { companyId, userId });
+
+    console.log(`✅ Sync jobs queued for company: ${companyId}`);
   } catch (err) {
-    console.error(`❌ Sync failed for company: ${companyId}`, err);
+    console.error(`❌ Failed to dispatch sync jobs for company ${companyId}`, err);
   }
 }

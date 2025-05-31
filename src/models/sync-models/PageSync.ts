@@ -20,5 +20,7 @@ const PageSchema = new Schema<IPageSync>(
   { timestamps: true }
 );
 
-const PageModel = model<IPageSync>('Page', PageSchema);
+// 👇 Optional: force collection name to 'pages' to avoid mismatch
+const PageModel = model<IPageSync>('Page', PageSchema, 'pages');
+
 export default PageModel;

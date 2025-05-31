@@ -2,12 +2,14 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { initRedis } from './config/redis'; // ✅ fixed import
+
 import mongoose from 'mongoose';
 import app from './app';
 
+// 🛠️ Start the BullMQ worker
+import './workers/syncWorker';
+
 async function startServer() {
-  await initRedis(); // ✅ fixed call
 
   await mongoose.connect(process.env.MONGO_URI!);
   console.log('✅ MongoDB Connected');

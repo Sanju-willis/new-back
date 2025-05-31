@@ -5,7 +5,6 @@ import AuthMethod from '../../models/AuthMethod';
 
 export async function syncFacebookPages(companyId: string, userId: string) {
   try {
-    // 🔐 Get the Facebook access token for the user
     const auth = await AuthMethod.findOne({ userId, type: 'facebook' });
     if (!auth || !auth.accessToken) {
       throw new Error('Facebook access token not found for user');
@@ -13,7 +12,6 @@ export async function syncFacebookPages(companyId: string, userId: string) {
 
     const accessToken = auth.accessToken;
 
-    // 📡 Call Facebook Graph API to get pages
     const fbRes = await axios.get(
       `https://graph.facebook.com/v18.0/me/accounts?access_token=${accessToken}`
     );
@@ -27,18 +25,18 @@ export async function syncFacebookPages(companyId: string, userId: string) {
         accessToken: page.access_token,
         category: page.category,
         company: companyId,
-        userId: userId,
       };
 
-      // 💾 Upsert into PageSync collection
-      await PageSync.updateOne(
-        { pageId: page.id, company: companyId },
+      const result = await PageSync.updateOne(
+        { pageId: page.id },
         pageData,
         { upsert: true }
       );
 
       console.log(`📄 Synced page: ${page.name} (${page.id})`);
+      console.log('📋 MongoDB write result:', result);
     }
+return { companyId, userId }; // so returnvalue will be available
 
     console.log(`✅ Total ${pages.length} Facebook pages synced for company ${companyId}`);
   } catch (err) {

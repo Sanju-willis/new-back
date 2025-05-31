@@ -2,18 +2,25 @@
 import { Worker } from 'bullmq';
 import { redisConnection } from '../config/redis';
 import { syncFacebookPages } from '../services/sync-services/pageService';
+import { syncUserPosts } from '../services/sync-services/postService';
 
-const worker = new Worker(  'sync',  async job => {
-    const { companyId, userId } = job.data;
-    await syncFacebookPages(companyId, userId);
-  },
-  { connection: redisConnection }
-);
+console.log('🛠️ Sync Worker started and listening for jobs...');
 
-worker.on('completed', job => {
-  console.log(`✅ Job ${job.id} completed`);
-});
+new Worker('sync-queue', async (job) => {
+  const { name, data } = job;
 
-worker.on('failed', (job, err) => {
-  console.error(`❌ Job ${job?.id} failed:`, err);
+  console.log(`📦 Received job: ${name}`, data);
+
+  if (name === 'sync-pages') {
+    console.log(`🔄 Syncing Facebook pages for company: ${data.companyId}`);
+    await syncFacebookPages(data.companyId, data.userId);
+  }
+
+  if (name === 'sync-posts') {
+    console.log(`📝 Syncing posts for company: ${data.companyId}`);
+    await syncUserPosts(data.companyId, data.userId);
+  }
+}, {
+  connection: redisConnection, // ✅ Using the ioredis instance
+  concurrency: 5,
 });

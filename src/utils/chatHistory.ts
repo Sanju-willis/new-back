@@ -18,7 +18,5 @@ export async function getChatHistory(userId: string): Promise<ChatMessage[]> {
 
 export async function saveChatHistory(userId: string, history: ChatMessage[]): Promise<void> {
   const key = `chat:${userId}`;
-await redis.set(key, JSON.stringify(history), {
-  EX: 60 * 15, // 15 minutes
-});
+  await redis.set(key, JSON.stringify(history), 'EX', CHAT_TTL);
 }
