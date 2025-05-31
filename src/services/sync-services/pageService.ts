@@ -6,7 +6,7 @@ import AuthMethod from '../../models/AuthMethod';
 export async function syncFacebookPages(companyId: string, userId: string) {
   try {
     const auth = await AuthMethod.findOne({ userId, type: 'facebook' });
-    if (!auth || !auth.accessToken) {
+    if (!auth?.accessToken) {
       throw new Error('Facebook access token not found for user');
     }
 
@@ -36,9 +36,10 @@ export async function syncFacebookPages(companyId: string, userId: string) {
       console.log(`📄 Synced page: ${page.name} (${page.id})`);
       console.log('📋 MongoDB write result:', result);
     }
-return { companyId, userId }; // so returnvalue will be available
 
     console.log(`✅ Total ${pages.length} Facebook pages synced for company ${companyId}`);
+
+    return { pagesSynced: pages.length }; // ✅ cleaner return value
   } catch (err) {
     console.error(`❌ Failed to sync Facebook pages for company ${companyId}`, err);
     throw err;

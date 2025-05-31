@@ -3,5 +3,5 @@ import { Queue } from 'bullmq';
 import { redisConnection } from '../config/redis';
 
 export const syncQueue = new Queue('sync-queue', {
-  connection: redisConnection, // ✅ Now using ioredis instance
+  connection: redisConnection
 });

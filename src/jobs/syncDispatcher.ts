@@ -1,36 +1,37 @@
-// src/jobs/syncDispatcher.ts
-import { Queue, Job } from 'bullmq';
+// src\jobs\syncDispatcher.ts
+import { syncQueue } from '../queues/syncQueue';
+import { QueueEvents } from 'bullmq';
 import { redisConnection } from '../config/redis';
 
-const syncQueue = new Queue('sync-queue', { connection: redisConnection });
+const queueEvents = new QueueEvents('sync-queue', { connection: redisConnection });
 
 export async function syncDispatcher(companyId: string, userId: string) {
   try {
-    console.log('🧾 Dispatching sync-pages job...');
+    console.log('🧾 Dispatching sync-pages...');
 
-    const jobId = `pages-${companyId}`;
-    await syncQueue.add('sync-pages', { companyId, userId }, { jobId });
+    const pageJob = await syncQueue.add('sync-pages', { companyId, userId });
 
-    // ✅ Wait until Redis confirms the parent job is stored
-    let retries = 10;
-    while (retries-- > 0) {
-      const exists = await Job.fromId(syncQueue, jobId);
-      if (exists) break;
-      await new Promise(res => setTimeout(res, 100));
-    }
+    queueEvents.once('completed', async ({ jobId }) => {
+      if (jobId === pageJob.id) {
+        console.log('✅ sync-pages finished, now dispatching sync-posts');
+        const postJob = await syncQueue.add('sync-posts', { companyId, userId });
 
-    console.log('✅ sync-pages job confirmed, now adding sync-posts...');
+        queueEvents.once('completed', async ({ jobId }) => {
+          if (jobId === postJob.id) {
+            console.log('✅ sync-posts finished, now dispatching sync-business');
+            const businessJob = await syncQueue.add('sync-business', { companyId, userId });
 
-    await syncQueue.add('sync-posts', { companyId, userId }, {
-      jobId: `posts-${companyId}`,
-      parent: {
-        id: jobId,
-        queue: 'sync-queue'
+            queueEvents.once('completed', async ({ jobId }) => {
+              if (jobId === businessJob.id) {
+                console.log('✅ sync-business finished, now dispatching sync-ad-accounts');
+                await syncQueue.add('sync-ad-accounts', { companyId, userId });
+              }
+            });
+          }
+        });
       }
     });
-
-    console.log(`✅ Posts will run after pages for company: ${companyId}`);
   } catch (err) {
-    console.error(`❌ Failed to dispatch jobs for ${companyId}`, err);
+    console.error('❌ Job dispatch failed:', err);
   }
 }

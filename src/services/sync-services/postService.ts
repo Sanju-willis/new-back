@@ -42,6 +42,7 @@ export async function syncUserPosts(companyId: string, userId: string) {
     }
 
     console.log(`✅ Facebook posts synced for company ${companyId}`);
+    return { pagesChecked: pages.length };
   } catch (err) {
     console.error(`❌ Failed to sync posts for company ${companyId}`, err);
     throw err;
