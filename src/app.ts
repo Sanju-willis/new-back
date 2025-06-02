@@ -26,6 +26,7 @@ app.use('/auth', authRoute);
 app.use('/chat', chatRoute);
 app.use('/onboard', onboardRouter);
 app.use('/sync', syncRoute);
+app.use('/patch', syncRoute);
 
 
 

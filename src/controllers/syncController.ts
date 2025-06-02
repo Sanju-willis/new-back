@@ -25,3 +25,21 @@ export const getCompany = asyncHandler(async (req: Request, res: Response) => {
   console.log('[✅ getCompany] Found company:', company.name);
   res.json(company);
 });
+
+export const updateCompany = asyncHandler(async (req: Request, res: Response) => {
+  const user = (req as AuthUserReq).user;
+  const { name, industry, description } = req.body;
+
+  if (!user?.companyId) {
+    res.status(401).json({ message: 'Unauthorized or missing company ID' });
+    return;
+  }
+
+  const updated = await Company.findByIdAndUpdate(
+    user.companyId,
+    { name, industry, description },
+    { new: true }
+  );
+
+  res.json(updated); // ✅ Just call it, no `return`
+});

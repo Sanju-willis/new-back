@@ -1,10 +1,10 @@
 // src\interfaces\agentRouter.ts
-export type StageKey = 'create_company' | 'company_created';
-export type StepKey = 'form_opened' | 'company_name' | 'industry' | 'role' | 'resume';
+export type StageTypes = 'create_company' | 'company_created';
+export type StepTypes = 'form_opened' | 'company_name' | 'industry' | 'role' | 'resume';
 
 export type PromptBuilder = (
   user: { name: string; companyId?: string },
-  step: StepKey,
+  step: StepTypes,
   message: string
 ) => {
   prompt: string;
@@ -13,7 +13,7 @@ export type PromptBuilder = (
 
 
 export type AgentRouter = {
-  [K in StageKey]: {
-    [S in StepKey]?: PromptBuilder;
+  [K in StageTypes]: {
+    [S in StepTypes]?: PromptBuilder;
   };
 };

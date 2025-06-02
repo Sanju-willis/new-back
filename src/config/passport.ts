@@ -21,7 +21,7 @@ passport.use(new FacebookStrategy(
     try {
       const user = await handleFacebookLogin(accessToken, profile);
       
-      //dataLog('🔁 [DATA] Passport out:', user);
+    dataLog('🔁 [DATA] Passport out:', user);
      
       return done(null, user);
     } catch (err) {

@@ -8,7 +8,7 @@ import { AuthUserReq } from '../interfaces/AuthUser';
 export const handleFacebookCallback = async (req: Request, res: Response) => {
 const user = (req as AuthUserReq).user;
 
- // dataLog('1 Signup Flow Callback:', user);
+ //dataLog('1 Signup Flow Callback:', user);
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
     expiresIn: '7d',
@@ -42,23 +42,6 @@ export async function handleLoginCheck(req: Request, res: Response): Promise<voi
     return;
   }
 
-  // ✅ Add companyId if available
-  const payload = {
-    id: userDoc._id,
-    ...(company && { companyId: company._id.toString() }),
-  };
-
-  const token = jwt.sign(payload, process.env.JWT_SECRET!, {
-    expiresIn: '7d',
-  });
-
-  res.cookie('token', token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  });
-
   const responsePayload = {
     user: {
       name: userDoc.name,
@@ -68,8 +51,6 @@ export async function handleLoginCheck(req: Request, res: Response): Promise<voi
     company,
     progress,
   };
-
- // console.log('[LoginCheck] Sending response:', responsePayload);
 
   res.json(responsePayload);
 }

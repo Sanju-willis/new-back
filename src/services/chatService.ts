@@ -2,21 +2,21 @@
 import { openai } from '../config/openai';
 import { stepPrompts } from '../ai/stepTemplates';
 import { assistantReplyParams, AssistantReply } from '../interfaces/assistReply';
-import { StageKey, StepKey } from '../interfaces/agentRouter';
+import { StageTypes, StepTypes } from '../interfaces/agentRouter';
 import { getChatHistory, saveChatHistory } from '../utils/chatHistory';
 
-const stageFlowMap: Record<StageKey, StepKey[]> = {
+const stageFlowMap: Record<StageTypes, StepTypes[]> = {
   create_company: ['form_opened', 'company_name', 'industry', 'role', 'resume'],
   company_created: ['form_opened', 'resume'],
 };
 
-function getNextStep(stage: StageKey, currentStep: StepKey): StepKey {
+function getNextStep(stage: StageTypes, currentStep: StepTypes): StepTypes {
   const steps = stageFlowMap[stage] || [];
   const index = steps.indexOf(currentStep);
   return index >= 0 && index < steps.length - 1 ? steps[index + 1] : currentStep;
 }
 
-function isFallbackStep(stage: StageKey, step: StepKey): boolean {
+function isFallbackStep(stage: StageTypes, step: StepTypes): boolean {
   return stageFlowMap[stage]?.[0] === step || step === 'resume';
 }
 
@@ -35,8 +35,8 @@ function isPromptLike(input: string): boolean {
 }
 
 export async function assistantReply({ msg = '', stage, step, user }: assistantReplyParams): Promise<AssistantReply> {
-  const resolvedStage = (stage ?? 'create_company') as StageKey;
-  const resolvedStep = (step ?? 'form_opened') as StepKey;
+  const resolvedStage = (stage ?? 'create_company') as StageTypes;
+  const resolvedStep = (step ?? 'form_opened') as StepTypes;
 
   console.log('📩 Incoming request:', { msg, stage, step, user });
 

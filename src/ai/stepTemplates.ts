@@ -1,5 +1,5 @@
 // src\ai\stepTemplates.ts
-import { StageKey, StepKey } from '../interfaces/agentRouter';
+import { StageTypes, StepTypes } from '../interfaces/agentRouter';
 
 type PromptTemplate = {
   prompt: (ctx: { name: string; companyId?: string }) => string;
@@ -7,8 +7,8 @@ type PromptTemplate = {
 };
 
 type StepPromptMap = {
-  [stage in StageKey]?: {
-    [step in StepKey]?: PromptTemplate;
+  [stage in StageTypes]?: {
+    [step in StepTypes]?: PromptTemplate;
   };
 };
 
