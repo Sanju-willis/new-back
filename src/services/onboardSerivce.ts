@@ -3,6 +3,8 @@ import Company, {ICompany} from '../models/Company';
 import User from '../models/User';
 import Progress, {IProgress} from '../models/Progress';
 import CompanyMember from '../models/CompanyMember';
+import Item from '../models/Items'; // 👈 Add this import
+
 
 interface BasicCompanyInput {
   companyName: string;
@@ -10,6 +12,8 @@ interface BasicCompanyInput {
   target_market: string;
   description: string;
   role?: string;
+    items?: { name: string; type: 'product' | 'service' }[];
+
 }
 
 export const createBasicCompany = async (
@@ -31,7 +35,14 @@ export const createBasicCompany = async (
     userId: userId,
     role: data.role ?? 'admin', // ✅ use dynamic role or fallback
   });
-
+ if (data.items && data.items.length > 0) {
+    const itemsToInsert = data.items.map((item) => ({
+      name: item.name,
+      type: item.type,
+      companyId: company._id,
+    }));
+    await Item.insertMany(itemsToInsert);
+  }
   const progress = await Progress.create({
     companyId: company._id,
     stage: 'company_created',

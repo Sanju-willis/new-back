@@ -14,7 +14,7 @@ export const createCompanyController = asyncHandler(async (req: Request, res: Re
     return;
   }
 
-  const { companyName, industry, target_market, description, role } = req.body;
+  const { companyName, industry, target_market, description, role, items } = req.body;
 
   try {
     const { company, progress } = await createBasicCompany(user._id, {
@@ -23,6 +23,8 @@ export const createCompanyController = asyncHandler(async (req: Request, res: Re
       target_market,
       description,
       role,
+      items, // 👈 include items here
+
     });
 
     // 🔁 Start syncing process

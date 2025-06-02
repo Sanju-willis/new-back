@@ -3,6 +3,8 @@ import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import Company from '../models/Company';
 import { AuthUserReq } from '../interfaces/AuthUser';
+import Item from '../models/Items'; // 👈 Add this with other imports
+
 
 export const getCompany = asyncHandler(async (req: Request, res: Response) => {
   const user = (req as AuthUserReq).user;
@@ -42,4 +44,44 @@ export const updateCompany = asyncHandler(async (req: Request, res: Response) =>
   );
 
   res.json(updated); // ✅ Just call it, no `return`
+});
+
+export const getItems = asyncHandler(async (req: Request, res: Response) => {
+  const user = (req as AuthUserReq).user;
+
+  if (!user?.companyId) {
+    res.status(401).json({ message: 'Unauthorized or missing company ID' });
+    return;
+  }
+
+  const items = await Item.find({ companyId: user.companyId }).sort({ createdAt: -1 });
+
+  res.json(items);
+});
+export const updateItem = asyncHandler(async (req: Request, res: Response) => {
+  const user = (req as AuthUserReq).user;
+  const { _id, name, type } = req.body;
+
+  if (!user?.companyId) {
+    res.status(401).json({ message: 'Unauthorized or missing company ID' });
+    return;
+  }
+
+  if (!_id || !name || !type) {
+    res.status(400).json({ message: 'Missing item ID, name or type' });
+    return;
+  }
+
+  const updatedItem = await Item.findOneAndUpdate(
+    { _id, companyId: user.companyId },
+    { name, type },
+    { new: true }
+  );
+
+  if (!updatedItem) {
+    res.status(404).json({ message: 'Item not found or unauthorized' });
+    return;
+  }
+
+  res.json(updatedItem);
 });
