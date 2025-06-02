@@ -39,7 +39,7 @@ export async function syncCampaigns(companyId: string, userId: string) {
           },
           { upsert: true }
         );
-        console.log(`✅ Synced Campaign: ${c.name}`);
+      //  console.log(`✅ Synced Campaign: ${c.name}`);
       }
     } catch (err: any) {
       console.error(`❌ Error syncing campaigns for ${fbId}:`, err?.response?.data || err.message);

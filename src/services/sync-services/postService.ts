@@ -36,12 +36,12 @@ export async function syncUserPosts(companyId: string, userId: string) {
           { upsert: true }
         );
 
-        console.log(`📝 Synced post: ${post.id} from page ${page.pageId}`);
-        console.log('📋 MongoDB write result:', result);
+       // console.log(`📝 Synced post: ${post.id} from page ${page.pageId}`);
+      //  console.log('📋 MongoDB write result:', result);
       }
     }
 
-    console.log(`✅ Facebook posts synced for company ${companyId}`);
+//console.log(`✅ Facebook posts synced for company ${companyId}`);
     return { pagesChecked: pages.length };
   } catch (err) {
     console.error(`❌ Failed to sync posts for company ${companyId}`, err);

@@ -38,12 +38,12 @@ export async function syncAdAccounts(companyId: string, userId: string) {
           { upsert: true }
         );
 
-        console.log(`📊 Synced Ad Account: ${acct.name} (${acct.id}) under BM ${businessId}`);
-        console.log('📋 Mongo write result:', result);
+       // console.log(`📊 Synced Ad Account: ${acct.name} (${acct.id}) under BM ${businessId}`);
+      //  console.log('📋 Mongo write result:', result);
       }
     }
 
-    console.log(`✅ Synced ad accounts from ${businessManagers.length} business managers`);
+   // console.log(`✅ Synced ad accounts from ${businessManagers.length} business managers`);
   } catch (err) {
     console.error(`❌ Failed to sync ad accounts for company ${companyId}`, err);
     throw err;

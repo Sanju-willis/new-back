@@ -65,7 +65,7 @@ export async function syncInsights(companyId: string, userId: string) {
         { upsert: true }
       );
 
-      console.log(`📈 Synced Insight for Ad ${ad.adId} (${doc.date.toDateString()})`);
+    //  console.log(`📈 Synced Insight for Ad ${ad.adId} (${doc.date.toDateString()})`);
     } catch (err: any) {
       console.error(`❌ Failed to sync insights for Ad ${ad.adId}`, err?.response?.data || err.message);
     }

@@ -41,7 +41,7 @@ export async function syncAds(companyId: string, userId: string) {
         };
 
         await Ad.updateOne({ adId: item.id }, doc, { upsert: true });
-        console.log(`📢 Synced Ad: ${item.name} (${item.id})`);
+       // console.log(`📢 Synced Ad: ${item.name} (${item.id})`);
       }
     } catch (err: any) {
       console.error(`❌ Failed to fetch ads for adAccountId: ${fbAdAccountId}`, err?.response?.data || err.message);

@@ -37,7 +37,7 @@ export async function syncAdCreatives(companyId: string, userId: string) {
       };
 
       await AdCreative.updateOne({ adCreativeId: creativeId }, doc, { upsert: true });
-      console.log(`🎨 Synced Ad Creative: ${creativeId}`);
+     // console.log(`🎨 Synced Ad Creative: ${creativeId}`);
     } catch (err: any) {
       console.error(`❌ Failed to sync Ad Creative for Ad ${ad.adId}`, err?.response?.data || err.message);
     }

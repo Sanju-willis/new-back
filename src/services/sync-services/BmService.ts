@@ -46,11 +46,11 @@ export async function syncBusinessManager(companyId: string, userId: string) {
         { upsert: true }
       );
 
-      console.log(`🏢 Synced BM: ${biz.name} (${businessId})`);
-      console.log('📋 Mongo result:', result);
+     // console.log(`🏢 Synced BM: ${biz.name} (${businessId})`);
+     // console.log('📋 Mongo result:', result);
     }
 
-    console.log(`✅ Total ${businesses.length} BMs synced`);
+  //  console.log(`✅ Total ${businesses.length} BMs synced`);
     return { businessManagersSynced: businesses.length };
 
   } catch (err) {

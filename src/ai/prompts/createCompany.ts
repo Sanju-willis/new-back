@@ -1,10 +1,16 @@
 // src\ai\prompts\createCompany.ts
+import { StepKey } from '../../interfaces/agentRouter';
+
 export const createCompanyPrompts = {
-  form_opened: (username: string, _step: string, _msg: string) => ({
+  form_opened: (
+    { name }: { name: string },
+    _step: StepKey,
+    _msg: string
+  ) => ({
     prompt: `
 You are an AI CRO onboarding assistant.
 
-🎉 Welcome ${username} — they just signed up.
+🎉 Welcome ${name} — they just signed up.
 
 Your goal:
 - Help them set up their company.

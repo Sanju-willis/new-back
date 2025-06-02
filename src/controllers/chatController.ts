@@ -8,7 +8,7 @@ import {dataLog } from '../utils/debuglog';
 export const getAssistantReplyController = asyncHandler(async (req: Request, res: Response) => {
   const user = (req as Request & AuthUserReq ).user;
 
- // dataLog('➡️  🟢-ai req input:', req.body)
+ // dataLog('➡️  🟢-ai req input:', req.body, user)
 
   if (!user) {
     res.status(401).json({ error: 'Unauthorized' });
@@ -17,7 +17,7 @@ export const getAssistantReplyController = asyncHandler(async (req: Request, res
 
   const { input = '', stage = '', step = '' } = req.body;
 
-  const result = await assistantReply({  msg: input, stage, step, user, });
+  const result = await assistantReply({  msg: input, stage, step, user });
     //dataLog('➡️  🔴- ai reply :',{result} )
 
   res.json(result);

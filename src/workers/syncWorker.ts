@@ -17,61 +17,61 @@ console.log('🛠️ Sync Worker started and listening for jobs...');
 new Worker('sync-queue', async (job) => {
   const { name, data } = job;
 
-  console.log(`📦 Received job: ${name}`, data);
+//  console.log(`📦 Received job: ${name}`, data);
 
   switch (name) {
     case 'sync-pages':
-      console.log(`🔄 Syncing Facebook pages for company: ${data.companyId}`);
+   //   console.log(`🔄 Syncing Facebook pages for company: ${data.companyId}`);
       await syncFacebookPages(data.companyId, data.userId);
-      console.log('✅ Pages sync complete');
+   //   console.log('✅ Pages sync complete');
       break;
 
     case 'sync-posts':
-      console.log(`📝 Syncing posts for company: ${data.companyId}`);
+    //  console.log(`📝 Syncing posts for company: ${data.companyId}`);
       await syncUserPosts(data.companyId, data.userId);
-      console.log('✅ Posts sync complete');
+   //   console.log('✅ Posts sync complete');
       break;
 
     case 'sync-business':
-      console.log(`🏢 Syncing Business Managers for company: ${data.companyId}`);
+    //  console.log(`🏢 Syncing Business Managers for company: ${data.companyId}`);
       await syncBusinessManager(data.companyId, data.userId);
-      console.log('✅ Business Manager sync complete');
+   //   console.log('✅ Business Manager sync complete');
       break;
 
     case 'sync-ad-accounts':
-      console.log(`📊 Syncing Ad Accounts for company: ${data.companyId}`);
+    //  console.log(`📊 Syncing Ad Accounts for company: ${data.companyId}`);
       await syncAdAccounts(data.companyId, data.userId);
-      console.log('✅ Ad Account sync complete');
+    //  console.log('✅ Ad Account sync complete');
       break;
 
     case 'sync-campaigns':
-      console.log(`📢 Syncing Campaigns for company: ${data.companyId}`);
+    //  console.log(`📢 Syncing Campaigns for company: ${data.companyId}`);
       await syncCampaigns(data.companyId, data.userId);
-      console.log('✅ Campaigns sync complete');
+     // console.log('✅ Campaigns sync complete');
       break;
 
     case 'sync-adsets':
-      console.log(`📈 Syncing Ad Sets for company: ${data.companyId}`);
+    //  console.log(`📈 Syncing Ad Sets for company: ${data.companyId}`);
       await syncAdSets(data.companyId, data.userId);
-      console.log('✅ Ad Sets sync complete');
+   //   console.log('✅ Ad Sets sync complete');
       break;
 
     case 'sync-ads':
-      console.log(`🎯 Syncing Ads for company: ${data.companyId}`);
+     // console.log(`🎯 Syncing Ads for company: ${data.companyId}`);
       await syncAds(data.companyId, data.userId);
-      console.log('✅ Ads sync complete');
+   //   console.log('✅ Ads sync complete');
       break;
 
     case 'sync-ad-creatives':
-      console.log(`🎨 Syncing Ad Creatives for company: ${data.companyId}`);
+     // console.log(`🎨 Syncing Ad Creatives for company: ${data.companyId}`);
       await syncAdCreatives(data.companyId, data.userId);
-      console.log('✅ Ad Creatives sync complete');
+    //  console.log('✅ Ad Creatives sync complete');
       break;
 
     case 'sync-insights':
-      console.log(`📊 Syncing Insights for company: ${data.companyId}`);
+    //  console.log(`📊 Syncing Insights for company: ${data.companyId}`);
       await syncInsights(data.companyId, data.userId);
-      console.log('✅ Insights sync complete');
+   //   console.log('✅ Insights sync complete');
       break;
 
     default:

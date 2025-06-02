@@ -1,13 +1,14 @@
 // src\controllers\onboardController.ts
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
+import jwt from 'jsonwebtoken';
 import { AuthUserReq } from '../interfaces/AuthUser';
 import { createBasicCompany } from '../services/onboardSerivce';
 import { syncDispatcher } from '../jobs/syncDispatcher';
 
 export const createCompanyController = asyncHandler(async (req: Request, res: Response) => {
   const user = (req as Request & AuthUserReq).user;
-  
+
   if (!user) {
     res.status(401).json({ error: 'Unauthorized' });
     return;
@@ -16,13 +17,38 @@ export const createCompanyController = asyncHandler(async (req: Request, res: Re
   const { companyName, industry, target_market, description, role } = req.body;
 
   try {
-    const {company, progress} = await createBasicCompany(user._id, { companyName, industry, target_market, description, role });
-    
-syncDispatcher(company._id.toString(), user._id.toString());
+    const { company, progress } = await createBasicCompany(user._id, {
+      companyName,
+      industry,
+      target_market,
+      description,
+      role,
+    });
 
+    // 🔁 Start syncing process
+    syncDispatcher(company._id.toString(), user._id.toString());
+
+    // 🔐 Create new JWT with companyId
+    const token = jwt.sign(
+      {
+        id: user._id,
+        companyId: company._id.toString(),
+      },
+      process.env.JWT_SECRET!,
+      { expiresIn: '7d' }
+    );
+
+    // 🍪 Set updated token in cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    // ✅ Respond with company and progress
     res.status(201).json({ company, progress });
-
-    } catch (err: any) {
+  } catch (err: any) {
     if (err.message === 'CompanyExists') {
       res.status(400).json({ error: 'Company already exists' });
     } else {

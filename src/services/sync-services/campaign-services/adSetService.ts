@@ -41,7 +41,7 @@ export async function syncAdSets(companyId: string, userId: string) {
         };
 
         await AdSet.updateOne({ adSetId: item.id }, doc, { upsert: true });
-        console.log(`📊 Synced Ad Set: ${item.name} (${item.id})`);
+       // console.log(`📊 Synced Ad Set: ${item.name} (${item.id})`);
       }
     } catch (err: any) {
       console.error(`❌ Failed to fetch ad sets for adAccountId: ${fbAdAccountId}`, err?.response?.data || err.message);

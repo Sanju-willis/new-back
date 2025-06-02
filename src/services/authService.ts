@@ -41,33 +41,22 @@ export async function handleFacebookLogin(  accessToken: string,  profile: Profi
 
 
 export async function getLoginResponse(userId: string) {
- // dataLog('[getLoginResponse] Fetching user:', userId);
   const user = await User.findById(userId);
 
   if (!user) {
-   //dataLog('[getLoginResponse] User not found:', userId);
     throw new Error('User not found');
   }
 
- // dataLog('[getLoginResponse] User found:', user._id);
+  // ✅ FIXED: Use correct field name in CompanyMember lookup
+  const member = await CompanyMember.findOne({ userId }).populate('companyId');
 
-  const member = await CompanyMember.findOne({ user: userId }).populate('companyId');
-
-  if (!member) {
-    //dataLog('[getLoginResponse] User is not a member of any company');
-    return { user, company: null, progress: null };
-  }
-
-  if (!member.companyId || typeof member.companyId === 'string') {
-  //  dataLog('[getLoginResponse] Member has no valid companyId or companyId is string:', member.companyId);
+  if (!member || !member.companyId || typeof member.companyId === 'string') {
     return { user, company: null, progress: null };
   }
 
   const company = member.companyId;
- // dataLog('[getLoginResponse] User is member of company:', company._id);
 
   const progress = await Progress.findOne({ companyId: company._id });
-  //dataLog('[getLoginResponse] Progress:', progress);
 
   return {
     user,

@@ -30,18 +30,33 @@ passport.use(new FacebookStrategy(
   }
 ));
 
-passport.use(new JwtStrategy({
-  jwtFromRequest: ExtractJwt.fromExtractors([
-    (req) => req?.cookies?.token // 
-  ]),
-  secretOrKey: process.env.JWT_SECRET!,
-}, async (jwtPayload, done) => {
-  try {
-    const user = await User.findById(jwtPayload.id);
-    if (!user) return done(null, false);
-    return done(null, user);
-  } catch (err) {
-    return done(err, false);
-  }
-}));
+passport.use(
+  new JwtStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (req) => req?.cookies?.token,
+      ]),
+      secretOrKey: process.env.JWT_SECRET!,
+    },
+    async (jwtPayload, done) => {
+      try {
+        //console.log('🔑 Decoded JWT payload:', jwtPayload);
+
+        const user = await User.findById(jwtPayload.id);
+        if (!user) return done(null, false);
+
+        // ✅ Return merged object, not mutated mongoose doc
+        const authUser = {
+          ...user.toObject(), // flatten the Mongoose doc
+          companyId: jwtPayload.companyId,
+        };
+
+        return done(null, authUser);
+      } catch (err) {
+        return done(err, false);
+      }
+    }
+  )
+);
+
 
