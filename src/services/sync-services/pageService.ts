@@ -24,7 +24,7 @@ export async function syncFacebookPages(companyId: string, userId: string) {
         name: page.name,
         accessToken: page.access_token,
         category: page.category,
-        company: companyId,
+        companyId: companyId,
       };
 
       const result = await PageSync.updateOne(

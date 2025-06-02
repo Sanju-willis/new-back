@@ -2,20 +2,22 @@
 import { Schema, model, Document, Types } from 'mongoose';
 
 export interface IPageSync extends Document {
+  businessManagerId: Types.ObjectId;
   pageId: string;
   name: string;
   category?: string;
   accessToken: string;
-  company: Types.ObjectId;
+  companyId: Types.ObjectId;
 }
 
 const PageSchema = new Schema<IPageSync>(
   {
+    businessManagerId: { type: Schema.Types.ObjectId, ref: 'BusinessManager', required: true },
     pageId: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     category: { type: String },
     accessToken: { type: String, required: true },
-    company: { type: Schema.Types.ObjectId, ref: 'Company', required: true },
+    companyId: { type: Schema.Types.ObjectId, ref: 'Company', required: true },
   },
   { timestamps: true }
 );

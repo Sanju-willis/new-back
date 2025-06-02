@@ -28,7 +28,7 @@ export const createBasicCompany = async (
 
   await CompanyMember.create({
     companyId: company._id, // ✅ use correct field name
-    user: userId,
+    userId: userId,
     role: data.role ?? 'admin', // ✅ use dynamic role or fallback
   });
 

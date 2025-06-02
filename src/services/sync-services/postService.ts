@@ -11,7 +11,7 @@ export async function syncUserPosts(companyId: string, userId: string) {
       throw new Error('Facebook access token not found');
     }
 
-    const pages = await PageSync.find({ company: companyId });
+    const pages = await PageSync.find({ companyId }); // ✅ use companyId
 
     for (const page of pages) {
       const res = await axios.get(
@@ -26,8 +26,8 @@ export async function syncUserPosts(companyId: string, userId: string) {
           message: post.message,
           createdTime: new Date(post.created_time),
           permalinkUrl: post.permalink_url,
-          pageId: page.pageId,
-          company: companyId,
+          pageId: page._id,         // ✅ must be ObjectId
+          companyId: page.companyId // ✅ correct field
         };
 
         const result = await PostSync.updateOne(
