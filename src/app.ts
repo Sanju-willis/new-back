@@ -10,6 +10,7 @@ import { dataLog } from './utils/debuglog';
 import onboardRouter from './routes/onboardRoute';
 import syncRoute from './routes/syncRoute';
 import campaignOverviewRoutes from './routes/campaignOverviewRoutes'
+import campaignRoute from './routes/campaignRoutes';
 
 
 const app = express();
@@ -28,7 +29,9 @@ app.use('/chat', chatRoute);
 app.use('/onboard', onboardRouter);
 app.use('/sync', syncRoute);
 app.use('/patch', syncRoute);
-app.use('/', campaignOverviewRoutes);
+app.use('/campaigns', campaignOverviewRoutes);
+app.use('/campaigns', campaignRoute);
+
 
 
 

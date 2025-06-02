@@ -5,6 +5,6 @@ import { getCampaignOverview } from '../controllers/campaignOverviewController';
 
 const router = express.Router();
 
-router.get('/campaigns/overview',passport.authenticate('jwt', { session: false }), getCampaignOverview);
+router.get('/overview',passport.authenticate('jwt', { session: false }), getCampaignOverview);
 
 export default router;

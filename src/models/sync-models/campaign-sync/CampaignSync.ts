@@ -12,6 +12,7 @@ export interface ICampaign extends Document {
   status: string;
   startTime?: Date;
   stopTime?: Date;
+  itemId?:Types.ObjectId;
 }
 
 const CampaignSchema = new Schema<ICampaign>({
@@ -25,6 +26,8 @@ const CampaignSchema = new Schema<ICampaign>({
   status: { type: String, required: true },
   startTime: { type: Date },
   stopTime: { type: Date },
+    itemId: { type: Schema.Types.ObjectId, ref: 'Item' }, // ✅ NEW
+
 }, { timestamps: true });
 
 export default model<ICampaign>('Campaign', CampaignSchema);
