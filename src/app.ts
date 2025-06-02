@@ -8,6 +8,7 @@ import authRoute from './routes/authRoute';
 import chatRoute from './routes/chatRoute';
 import { dataLog } from './utils/debuglog';
 import onboardRouter from './routes/onboardRoute';
+import syncRoute from './routes/syncRoute';
 
 
 const app = express();
@@ -24,6 +25,8 @@ app.use(cookieParser());
 app.use('/auth', authRoute);
 app.use('/chat', chatRoute);
 app.use('/onboard', onboardRouter);
+app.use('/sync', syncRoute);
+
 
 
 export default app;

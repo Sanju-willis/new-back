@@ -1,19 +1,24 @@
 // src\services\chatService.ts
 import { openai } from '../config/openai';
-import { agentRouter } from '../ai/agentRouter';
+import { stepPrompts } from '../ai/stepTemplates';
 import { assistantReplyParams, AssistantReply } from '../interfaces/assistReply';
 import { StageKey, StepKey } from '../interfaces/agentRouter';
 import { getChatHistory, saveChatHistory } from '../utils/chatHistory';
 
-const nextStepMap: Record<StepKey, StepKey | null> = {
-  form_opened: 'company_name',
-  company_name: 'industry',
-  industry: 'role',
-  role: 'resume',
-  resume: null,
+const stageFlowMap: Record<StageKey, StepKey[]> = {
+  create_company: ['form_opened', 'company_name', 'industry', 'role', 'resume'],
+  company_created: ['form_opened', 'resume'],
 };
 
-const fallbackSteps: StepKey[] = ['form_opened', 'resume'];
+function getNextStep(stage: StageKey, currentStep: StepKey): StepKey {
+  const steps = stageFlowMap[stage] || [];
+  const index = steps.indexOf(currentStep);
+  return index >= 0 && index < steps.length - 1 ? steps[index + 1] : currentStep;
+}
+
+function isFallbackStep(stage: StageKey, step: StepKey): boolean {
+  return stageFlowMap[stage]?.[0] === step || step === 'resume';
+}
 
 function injectSystemPrompt(history: any[]) {
   if (!history.find(m => m.role === 'system')) {
@@ -29,25 +34,15 @@ function isPromptLike(input: string): boolean {
   return input.includes('you are an AI') || input.includes('your goal:') || input.includes('Company created');
 }
 
-export async function assistantReply({
-  msg = '',
-  stage,
-  step,
-  user,
-}: assistantReplyParams): Promise<AssistantReply> {
+export async function assistantReply({ msg = '', stage, step, user }: assistantReplyParams): Promise<AssistantReply> {
   const resolvedStage = (stage ?? 'create_company') as StageKey;
   const resolvedStep = (step ?? 'form_opened') as StepKey;
 
   console.log('📩 Incoming request:', { msg, stage, step, user });
 
-  const promptBuilder = agentRouter?.[resolvedStage]?.[resolvedStep];
-  if (!promptBuilder) {
-    console.warn(`⚠️ No prompt builder found for stage "${resolvedStage}", step "${resolvedStep}"`);
-  }
-
-  const built = promptBuilder?.({ name: user.name, companyId: user.companyId }, resolvedStep, msg);
-  const prompt = built?.prompt ?? `User (${user.name}) is interacting. Provide helpful guidance.`;
-  const model = built?.model ?? 'gpt-3.5-turbo';
+  const template = stepPrompts?.[resolvedStage]?.[resolvedStep];
+  const prompt = template?.prompt?.({ name: user.name, companyId: user.companyId }) ?? `User (${user.name}) is interacting. Provide helpful guidance.`;
+  const model = template?.model ?? 'gpt-3.5-turbo';
 
   console.log('🧠 Using model:', model);
   console.log('💬 Prompt sent:', prompt);
@@ -57,8 +52,7 @@ export async function assistantReply({
 
   const cleanMsg = msg.trim();
 
-  // 🛑 Block empty/generic input unless step is in fallbackSteps
-  if (!fallbackSteps.includes(resolvedStep) && (!cleanMsg || isPromptLike(cleanMsg))) {
+  if (!isFallbackStep(resolvedStage, resolvedStep) && (!cleanMsg || isPromptLike(cleanMsg))) {
     console.log('🚫 Ignored message: empty or generic');
     return {
       reply: 'Please say something meaningful to continue.',
@@ -71,7 +65,7 @@ export async function assistantReply({
     history.push({ role: 'user', content: cleanMsg });
   }
 
-  if (!cleanMsg && fallbackSteps.includes(resolvedStep)) {
+  if (!cleanMsg && isFallbackStep(resolvedStage, resolvedStep)) {
     history.push({ role: 'user', content: prompt });
   }
 
@@ -86,7 +80,7 @@ export async function assistantReply({
   history.push({ role: 'assistant', content: reply });
   await saveChatHistory(user._id, history);
 
-  const nextStep = cleanMsg ? nextStepMap[resolvedStep] ?? resolvedStep : resolvedStep;
+  const nextStep = cleanMsg ? getNextStep(resolvedStage, resolvedStep) : resolvedStep;
 
   return {
     reply,
