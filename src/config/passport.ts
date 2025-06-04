@@ -40,7 +40,7 @@ passport.use(
     },
     async (jwtPayload, done) => {
       try {
-        //console.log('🔑 Decoded JWT payload:', jwtPayload);
+      console.log('🔑 Decoded JWT payload:', jwtPayload);
 
         const user = await User.findById(jwtPayload.id);
         if (!user) return done(null, false);
