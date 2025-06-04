@@ -36,42 +36,14 @@ export const updateCompany = asyncHandler(async (req: Request, res: Response) =>
     return;
   }
 
-  const {
-    name,
-    industry,
-    size,
-    type,
-    targetMarket,
-    address,
-    website,
-    description,
-    brandGuideUrl,
-    logoAssetsUrl,
-    pressKitUrl,
-    portfolioUrl,
-    contentLibraryUrl,
-    socialLinks,
-    productPages,
-  } = req.body;
+  const { name, industry, size, type, targetMarket, address, website, description, brandGuideUrl, logoAssetsUrl, pressKitUrl,
+    portfolioUrl,contentLibraryUrl, socialLinks, productPages,} = req.body;
 
   const updated = await Company.findByIdAndUpdate(
     user.companyId,
     {
-      name,
-      industry,
-      size,
-      type,
-      targetMarket,
-      address,
-      website,
-      description,
-      brandGuideUrl,
-      logoAssetsUrl,
-      pressKitUrl,
-      portfolioUrl,
-      contentLibraryUrl,
-      socialLinks: socialLinks?.filter(Boolean),
-      productPages: productPages?.filter(Boolean),
+      name, industry, size, type, targetMarket, address, website, description, brandGuideUrl, logoAssetsUrl, pressKitUrl,
+      portfolioUrl, contentLibraryUrl, socialLinks: socialLinks?.filter(Boolean), productPages: productPages?.filter(Boolean),
     },
     { new: true }
   );
@@ -81,38 +53,42 @@ export const updateCompany = asyncHandler(async (req: Request, res: Response) =>
 export const getItems = asyncHandler(async (req: Request, res: Response) => {
   const user = (req as AuthUserReq).user;
 
-  if (!user?.companyId) {
-    res.status(401).json({ message: 'Unauthorized or missing company ID' });
+   if (!user?.companyId) {
+    res.status(401).json({ message: 'Unauthorized' });
     return;
   }
 
   const items = await Item.find({ companyId: user.companyId }).sort({ createdAt: -1 });
-
   res.json(items);
 });
+
 export const updateItem = asyncHandler(async (req: Request, res: Response) => {
   const user = (req as AuthUserReq).user;
-  const { _id, name, type } = req.body;
+  const {_id, name, type, description, category, features, mainBenefits, painPoints, useCases, pricePositioning,
+    targetAudience, topCompetitors, uniqueSellingPoints} = req .body;
 
-  if (!user?.companyId) {
-    res.status(401).json({ message: 'Unauthorized or missing company ID' });
+   if (!user?.companyId) {
+    res.status(401).json({ message: 'Unauthorized' });
     return;
   }
 
   if (!_id || !name || !type) {
-    res.status(400).json({ message: 'Missing item ID, name or type' });
-    return;
+     res.status(400).json({ message: 'Missing item ID, name, or type' });
+     return;
   }
+
+  const updatePayload = {name, type, description, category, features, mainBenefits, painPoints, useCases,
+    pricePositioning,  targetAudience,  topCompetitors,  uniqueSellingPoints };
 
   const updatedItem = await Item.findOneAndUpdate(
     { _id, companyId: user.companyId },
-    { name, type },
+    updatePayload,
     { new: true }
   );
 
   if (!updatedItem) {
-    res.status(404).json({ message: 'Item not found or unauthorized' });
-    return;
+     res.status(404).json({ message: 'Item not found or unauthorized' });
+     return;
   }
 
   res.json(updatedItem);
