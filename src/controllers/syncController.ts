@@ -30,22 +30,54 @@ export const getCompany = asyncHandler(async (req: Request, res: Response) => {
 
 export const updateCompany = asyncHandler(async (req: Request, res: Response) => {
   const user = (req as AuthUserReq).user;
-  const { name, industry, description } = req.body;
 
   if (!user?.companyId) {
     res.status(401).json({ message: 'Unauthorized or missing company ID' });
     return;
   }
 
+  const {
+    name,
+    industry,
+    size,
+    type,
+    targetMarket,
+    address,
+    website,
+    description,
+    brandGuideUrl,
+    logoAssetsUrl,
+    pressKitUrl,
+    portfolioUrl,
+    contentLibraryUrl,
+    socialLinks,
+    productPages,
+  } = req.body;
+
   const updated = await Company.findByIdAndUpdate(
     user.companyId,
-    { name, industry, description },
+    {
+      name,
+      industry,
+      size,
+      type,
+      targetMarket,
+      address,
+      website,
+      description,
+      brandGuideUrl,
+      logoAssetsUrl,
+      pressKitUrl,
+      portfolioUrl,
+      contentLibraryUrl,
+      socialLinks: socialLinks?.filter(Boolean),
+      productPages: productPages?.filter(Boolean),
+    },
     { new: true }
   );
 
-  res.json(updated); // ✅ Just call it, no `return`
+  res.json(updated);
 });
-
 export const getItems = asyncHandler(async (req: Request, res: Response) => {
   const user = (req as AuthUserReq).user;
 

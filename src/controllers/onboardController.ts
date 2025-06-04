@@ -14,18 +14,46 @@ export const createCompanyController = asyncHandler(async (req: Request, res: Re
     return;
   }
 
-  const { companyName, industry, target_market, description, role, items } = req.body;
+  const {
+  companyName,
+  industry,
+  size,
+  type,
+  target_market,
+  address,
+  website,
+  socialLinks,
+  brandGuideUrl,
+  logoAssetsUrl,
+  pressKitUrl,
+  portfolioUrl,
+  contentLibraryUrl,
+  productPages,
+  description,
+  role,
+  items
+} = req.body;
 
   try {
-    const { company, progress } = await createBasicCompany(user._id, {
-      companyName,
-      industry,
-      target_market,
-      description,
-      role,
-      items, // 👈 include items here
-
-    });
+   const { company, progress } = await createBasicCompany(user._id, {
+  companyName,
+  industry,
+  size,
+  type,
+  target_market,
+  address,
+  website,
+  socialLinks,
+  brandGuideUrl,
+  logoAssetsUrl,
+  pressKitUrl,
+  portfolioUrl,
+  contentLibraryUrl,
+  productPages,
+  description,
+  role,
+  items
+});
 
     // 🔁 Start syncing process
     syncDispatcher(company._id.toString(), user._id.toString());
