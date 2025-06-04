@@ -1,6 +1,5 @@
-// src\services\onboardSerivce.ts
+// src\services\onboardService.ts
 import Company, {ICompany} from '../models/Company';
-import User from '../models/User';
 import Progress, {IProgress} from '../models/Progress';
 import CompanyMember from '../models/CompanyMember';
 import Item from '../models/Items'; // 👈 Add this import
@@ -16,12 +15,10 @@ interface BasicCompanyInput {
 
 }
 
-export const createBasicCompany = async (
-  userId: string,
-  data: BasicCompanyInput
-): Promise<{ company: ICompany; progress: IProgress }> => {
-  const existing = await Company.findOne({ appUserId: userId });
-  if (existing) throw new Error('CompanyExists');
+export const createBasicCompany = async ( userId: string, data: BasicCompanyInput): Promise<{ company: ICompany; progress: IProgress }> => {
+
+  const existingMembership = await CompanyMember.findOne({ userId });
+  if (existingMembership) throw new Error('CompanyExists');
 
   const company = await Company.create({
     name: data.companyName,

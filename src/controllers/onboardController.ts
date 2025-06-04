@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
 import { AuthUserReq } from '../interfaces/AuthUser';
-import { createBasicCompany } from '../services/onboardSerivce';
+import { createBasicCompany } from '../services/onboardService';
 import { syncDispatcher } from '../jobs/syncDispatcher';
 
 export const createCompanyController = asyncHandler(async (req: Request, res: Response) => {
