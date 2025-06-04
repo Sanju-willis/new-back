@@ -41,7 +41,7 @@ export async function handleLoginCheck(req: Request, res: Response): Promise<voi
     res.status(404).json({ error: 'User not found' });
     return;
   }
- flowLog('🔄1 Auth Cookie  data:', company) ;
+ //flowLog('🔄1 Auth Cookie  data:', company) ;
 
   
    // ✅ Re-sign JWT with companyId if available
