@@ -1,4 +1,4 @@
-// src/controllers/campaignController.ts
+// src\controllers\campaignController.ts
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { attachItemToCampaignById } from '@/services/campaignService';

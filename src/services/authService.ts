@@ -1,5 +1,6 @@
 // src\services\authService.ts
-import User,{IUser} from '../models/User';
+import User from '../models/User';
+import {IUser } from '@/interfaces/models/IUser';
 import AuthMethod from '../models/AuthMethod';
 import { Profile } from 'passport-facebook';
 import { dataLog } from '../utils/debuglog';
