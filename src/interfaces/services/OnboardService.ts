@@ -1,4 +1,4 @@
-// src\interfaces\services\onboardService.ts
+// src\interfaces\services\OnboardService.ts
 
 export interface BasicCompanyInput {
   companyName: string;

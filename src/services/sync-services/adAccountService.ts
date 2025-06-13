@@ -17,7 +17,7 @@ export async function syncAdAccounts(companyId: string, userId: string) {
       const businessId = bm.businessId;
 
       const res = await axios.get(
-        `https://graph.facebook.com/v18.0/${businessId}/owned_ad_accounts?fields=id,name,currency&access_token=${accessToken}`
+        `https://graph.facebook.com/v22.0/${businessId}/owned_ad_accounts?fields=id,name,currency&access_token=${accessToken}`
       );
 
       const accounts = res.data?.data || [];

@@ -6,11 +6,13 @@ import { Profile } from 'passport-facebook';
 import { dataLog } from '../utils/debuglog';
 import CompanyMember from '../models/CompanyMember';
 import Progress from '../models/Progress';
+import { BadRequestError, NotFoundError } from '@/errors/Errors';
+
 
 export async function handleFacebookLogin(  accessToken: string,  profile: Profile ): Promise<IUser> {
   const email = profile.emails?.[0]?.value;
 
-  if (!email) throw new Error('Facebook profile does not have an email.');
+  if (!email) throw new BadRequestError('Facebook profile does not have an email.');
 
   let user = await User.findOne({ email });
 
@@ -44,9 +46,8 @@ export async function handleFacebookLogin(  accessToken: string,  profile: Profi
 export async function getLoginResponse(userId: string) {
   const user = await User.findById(userId);
 
-  if (!user) {
-    throw new Error('User not found');
-  }
+   if (!user) throw new NotFoundError('User not found');
+
 
   // ✅ FIXED: Use correct field name in CompanyMember lookup
   const member = await CompanyMember.findOne({ userId }).populate('companyId');

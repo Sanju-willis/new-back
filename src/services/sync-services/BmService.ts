@@ -2,11 +2,12 @@
 import axios from 'axios';
 import AuthMethod from '../../models/AuthMethod';
 import BusinessManager from '../../models/sync-models/BmSync';
+import { UnauthorizedError, BadRequestError, NotFoundError, ConflictError,} from '@/errors/Errors';
 
 export async function syncBusinessManager(companyId: string, userId: string) {
   try {
     const auth = await AuthMethod.findOne({ userId, type: 'facebook' });
-    if (!auth?.accessToken) throw new Error('Facebook access token not found');
+    if (!auth?.accessToken) throw new UnauthorizedError('Facebook access token not found');
     const accessToken = auth.accessToken;
 
     const bmRes = await axios.get(
@@ -14,6 +15,9 @@ export async function syncBusinessManager(companyId: string, userId: string) {
     );
 
     const businesses = bmRes.data?.data || [];
+     if (!businesses.length) {
+      throw new NotFoundError('No Business Managers found for this user.');
+    }
 
     for (const biz of businesses) {
       const businessId = biz.id;

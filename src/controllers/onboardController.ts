@@ -5,14 +5,11 @@ import jwt from 'jsonwebtoken';
 import { AuthUserReq } from '../interfaces/AuthUser';
 import { createBasicCompany } from '../services/onboardService';
 import { syncDispatcher } from '../jobs/syncDispatcher';
+import {UnauthorizedError } from '@/errors/Errors';
 
 export const createCompanyController = asyncHandler(async (req: Request, res: Response) => {
   const user = (req as Request & AuthUserReq).user;
-
-  if (!user) {
-    res.status(401).json({ error: 'Unauthorized' });
-    return;
-  }
+    if (!user) throw new UnauthorizedError();
 
   const {
   companyName,
@@ -34,7 +31,6 @@ export const createCompanyController = asyncHandler(async (req: Request, res: Re
   items
 } = req.body;
 
-  try {
    const { company, progress } = await createBasicCompany(user._id, {
   companyName,
   industry,
@@ -78,11 +74,5 @@ export const createCompanyController = asyncHandler(async (req: Request, res: Re
 
     // ✅ Respond with company and progress
     res.status(201).json({ company, progress });
-  } catch (err: any) {
-    if (err.message === 'CompanyExists') {
-      res.status(400).json({ error: 'Company already exists' });
-    } else {
-      throw err;
-    }
-  }
+ 
 });

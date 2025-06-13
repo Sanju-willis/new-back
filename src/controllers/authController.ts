@@ -4,9 +4,11 @@ import jwt from 'jsonwebtoken';
 import { flowLog, dataLog } from '../utils/debuglog';
 import { getLoginResponse } from '../services/authService';
 import { AuthUserReq } from '../interfaces/AuthUser';
+import { UnauthorizedError } from '@/errors/Errors';
 
 export const handleFacebookCallback = async (req: Request, res: Response) => {
 const user = (req as AuthUserReq).user;
+  if (!user) throw new UnauthorizedError();
 
  //dataLog('1 Signup Flow Callback:', user);
 
@@ -30,17 +32,11 @@ const user = (req as AuthUserReq).user;
 export async function handleLoginCheck(req: Request, res: Response): Promise<void> {
   const { user } = req as AuthUserReq;
 
-  if (!user) {
-    res.status(401).json({ error: 'Unauthorized' });
-    return;
-  }
+   if (!user) throw new UnauthorizedError();
+
 
   const { company, progress, user: userDoc } = await getLoginResponse(user._id);
 
-  if (!userDoc) {
-    res.status(404).json({ error: 'User not found' });
-    return;
-  }
  //flowLog('🔄1 Auth Cookie  data:', company) ;
 
   

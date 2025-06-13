@@ -3,21 +3,19 @@ import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { AuthUserReq } from '@/interfaces/AuthUser';
 import { findCompanyById, updateCompanyById, getCompanyItems, updateItemById,} from '@/services/syncService';
+import { UnauthorizedError, BadRequestError, NotFoundError } from '@/errors/Errors';
+
 
 export const getCompany = asyncHandler(async (req: Request, res: Response) => {
   const user = (req as AuthUserReq).user;
 
-  if (!user?.companyId) {
-    res.status(401).json({ message: 'Unauthorized or missing companyId' });
-    return;
-  }
+    if (!user?.companyId) throw new UnauthorizedError('Missing companyId');
+
 
   const company = await findCompanyById(user.companyId);
 
-  if (!company) {
-    res.status(404).json({ message: 'Company not found' });
-    return;
-  }
+   if (!company) throw new NotFoundError('Company not found');
+
 
   res.json(company);
 });
@@ -25,10 +23,8 @@ export const getCompany = asyncHandler(async (req: Request, res: Response) => {
 export const updateCompany = asyncHandler(async (req: Request, res: Response) => {
   const user = (req as AuthUserReq).user;
 
-  if (!user?.companyId) {
-    res.status(401).json({ message: 'Unauthorized or missing companyId' });
-    return;
-  }
+   if (!user?.companyId) throw new UnauthorizedError('Missing companyId');
+
 
   const updated = await updateCompanyById(user.companyId, req.body);
   res.json(updated);
@@ -37,10 +33,8 @@ export const updateCompany = asyncHandler(async (req: Request, res: Response) =>
 export const getItems = asyncHandler(async (req: Request, res: Response) => {
   const user = (req as AuthUserReq).user;
 
-  if (!user?.companyId) {
-    res.status(401).json({ message: 'Unauthorized' });
-    return;
-  }
+    if (!user?.companyId) throw new UnauthorizedError();
+
 
   const items = await getCompanyItems(user.companyId);
   res.json(items);
@@ -50,17 +44,12 @@ export const updateItem = asyncHandler(async (req: Request, res: Response) => {
   const user = (req as AuthUserReq).user;
   const { _id, name, type, ...rest } = req.body;
 
-  if (!user?.companyId || !_id || !name || !type) {
-    res.status(400).json({ message: 'Missing item ID, name, type, or companyId' });
-    return;
-  }
+   if (!user?.companyId) throw new UnauthorizedError('Missing companyId');
+  if (!_id || !name || !type) throw new BadRequestError('Missing item ID, name, or type');
 
   const updated = await updateItemById(user.companyId, _id, { name, type, ...rest });
 
-  if (!updated) {
-    res.status(404).json({ message: 'Item not found or unauthorized' });
-    return;
-  }
+  if (!updated) throw new NotFoundError('Item not found or unauthorized');
 
   res.json(updated);
 });

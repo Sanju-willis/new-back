@@ -1,5 +1,7 @@
 // src\services\campaignService.ts
 import Campaign from '@/models/sync-models/campaign-sync/CampaignSync';
+import { BadRequestError, NotFoundError } from '@/errors/Errors';
+
 
 export async function attachItemToCampaignById(
   campaignId: string,
@@ -7,13 +9,15 @@ export async function attachItemToCampaignById(
   userId: string,
   companyId: string
 ) {
-  if (!itemId) throw new Error('Missing itemId');
+  if (!itemId) throw new BadRequestError('Missing itemId');
 
   const updated = await Campaign.findOneAndUpdate(
     { _id: campaignId, userId, companyId },
     { itemId },
     { new: true }
   );
-
+ if (!updated) {
+    throw new NotFoundError('Campaign not found or not owned by user');
+  }
   return updated;
 }

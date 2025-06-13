@@ -6,14 +6,12 @@ import {IProgress } from '@/interfaces/models/IProgress';
 import CompanyMember from '../models/CompanyMember';
 import Item from '../models/Items'; // 👈 Add this import
 import { BasicCompanyInput } from '@/interfaces/services/OnboardService';
+import { ConflictError } from '@/errors/Errors';
 
 
-export const createBasicCompany = async (
-  userId: string,
-  data: BasicCompanyInput
-): Promise<{ company: ICompany; progress: IProgress }> => {
+export const createBasicCompany = async ( userId: string, data: BasicCompanyInput): Promise<{ company: ICompany; progress: IProgress }> => {
   const existingMembership = await CompanyMember.findOne({ userId });
-  if (existingMembership) throw new Error('CompanyExists');
+  if (existingMembership) throw new ConflictError('User is already part of a company.');
 
   const company = await Company.create({
     name: data.companyName,
