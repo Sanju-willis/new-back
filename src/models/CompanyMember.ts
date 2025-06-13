@@ -1,6 +1,6 @@
 // src\models\CompanyMember.ts
 import {Schema, model, Document, Types} from 'mongoose';	
-import {ICompanyMember } from '@/interfaces/models/ICompanyMember';
+import {ICompanyMember } from '@/models/model-inter/inter';
 
 const CompanyMemberSchema = new Schema<ICompanyMember>(
     {

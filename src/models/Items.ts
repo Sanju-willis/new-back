@@ -1,6 +1,6 @@
 // src\models\Items.ts
 import { Schema, Document, model, Types } from 'mongoose';
-import { IItem } from '@/interfaces/models/IItems';
+import { IItem } from '@/models/model-inter/inter';
 
 
 const itemSchema = new Schema<IItem>(

@@ -1,6 +1,6 @@
 // src\models\Company.ts
 import { model, Schema } from 'mongoose';
-import { ICompany } from '@/interfaces/models/ICompany';
+import { ICompany } from '@/models/model-inter/inter';
 
 const CompanySchema = new Schema<ICompany>(
   {

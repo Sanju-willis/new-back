@@ -1,6 +1,6 @@
 // src\models\User.ts
 import {Schema, Document, model, Types } from 'mongoose';
-import {IUser } from '@/interfaces/models/IUser';
+import {IUser } from '@/models/model-inter/inter';
 
 
 const UserSchema = new Schema<IUser>(
