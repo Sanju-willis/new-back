@@ -1,21 +1,7 @@
 // src\models\Items.ts
 import { Schema, Document, model, Types } from 'mongoose';
+import { IItem } from '@/interfaces/models/IItems';
 
-export interface IItem extends Document {
-  name: string;
-  type: 'product' | 'service';
-  companyId: Types.ObjectId;
-  description?: string;
-  category?: string;
-  features?: string[];
-  mainBenefits?: string[];
-  painPoints?: string[];
-  useCases?: string[];
-  pricePositioning?: string;
-  targetAudience?: string[];
-  topCompetitors?: string[];
-  uniqueSellingPoints?: string[];
-}
 
 const itemSchema = new Schema<IItem>(
   {

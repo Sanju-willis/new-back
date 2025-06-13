@@ -1,11 +1,6 @@
 // src\models\CompanyMember.ts
 import {Schema, model, Document, Types} from 'mongoose';	
-
-export interface ICompanyMember extends Document {
-    userId: Types.ObjectId;
-    companyId: Types.ObjectId;
-    role: string;
-}
+import {ICompanyMember } from '@/interfaces/models/ICompanyMember';
 
 const CompanyMemberSchema = new Schema<ICompanyMember>(
     {

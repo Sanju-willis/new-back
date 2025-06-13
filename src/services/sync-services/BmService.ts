@@ -10,7 +10,7 @@ export async function syncBusinessManager(companyId: string, userId: string) {
     const accessToken = auth.accessToken;
 
     const bmRes = await axios.get(
-      `https://graph.facebook.com/v18.0/me/businesses?access_token=${accessToken}`
+      `https://graph.facebook.com/v22.0/me/businesses?access_token=${accessToken}`
     );
 
     const businesses = bmRes.data?.data || [];
@@ -20,12 +20,12 @@ export async function syncBusinessManager(companyId: string, userId: string) {
 
       // 🔄 Get Ad Accounts under this Business
       const adAccountsRes = await axios.get(
-        `https://graph.facebook.com/v18.0/${businessId}/owned_ad_accounts?fields=id,name,currency&access_token=${accessToken}`
+        `https://graph.facebook.com/v22.0/${businessId}/owned_ad_accounts?fields=id,name,currency&access_token=${accessToken}`
       );
 
       // 🔄 Get Pages under this Business
       const pagesRes = await axios.get(
-        `https://graph.facebook.com/v18.0/${businessId}/owned_pages?fields=id,name,category&access_token=${accessToken}`
+        `https://graph.facebook.com/v22.0/${businessId}/owned_pages?fields=id,name,category&access_token=${accessToken}`
       );
 
       const adAccounts = adAccountsRes.data?.data || [];

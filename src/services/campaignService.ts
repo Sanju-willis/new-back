@@ -1,5 +1,4 @@
 // src\services\campaignService.ts
-// src/services/campaignService.ts
 import Campaign from '@/models/sync-models/campaign-sync/CampaignSync';
 
 export async function attachItemToCampaignById(

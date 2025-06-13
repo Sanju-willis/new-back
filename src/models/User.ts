@@ -1,14 +1,7 @@
 // src\models\User.ts
 import {Schema, Document, model, Types } from 'mongoose';
+import {IUser } from '@/interfaces/models/IUser';
 
-export interface IUser extends Document {
-  _id: Types.ObjectId;
-  name: string;
-  email: string;
-  photo?: string;
-  provider: string;
-  providerId: string;
-}
 
 const UserSchema = new Schema<IUser>(
   {

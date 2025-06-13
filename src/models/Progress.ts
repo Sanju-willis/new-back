@@ -1,11 +1,6 @@
 // src\models\Progress.ts
-import mongoose, { Schema, Types, Document, model } from 'mongoose';
-
-export interface IProgress extends Document {
-  companyId: Types.ObjectId;
-  stage: string;
-  step: string;
-}
+import  { Schema, model } from 'mongoose';
+import {IProgress} from '@/interfaces/models/IProgress';
 
 const ProgressSchema = new Schema<IProgress>(
   {

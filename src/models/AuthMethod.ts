@@ -1,12 +1,6 @@
 // src\models\AuthMethod.ts
 import  { Schema, model, Document, Types} from 'mongoose';
-
-export interface IAuthMethod extends Document {
-  userId: Types.ObjectId;
-  type: string;
-  accessToken: string;
-  refreshToken: string;
-}
+import {IAuthMethod } from '@/interfaces/models/IAuthMethod';
 
 const AuthMethodSchema = new Schema<IAuthMethod>(
   {

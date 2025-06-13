@@ -1,30 +1,12 @@
 // src\services\onboardService.ts
 import  {ICompany} from '@/interfaces/models/ICompany';
 import Company from '@/models/Company';
-import Progress, {IProgress} from '../models/Progress';
+import Progress from '../models/Progress';
+import {IProgress } from '@/interfaces/models/IProgress';
 import CompanyMember from '../models/CompanyMember';
 import Item from '../models/Items'; // 👈 Add this import
+import { BasicCompanyInput } from '@/interfaces/services/OnboardService';
 
-
-interface BasicCompanyInput {
-  companyName: string;
-  industry?: string;
-  size?: string;
-  type?: string;
-  target_market: string;
-  address?: string;
-  website?: string;
-  socialLinks?: string[];
-  brandGuideUrl?: string;
-  logoAssetsUrl?: string;
-  pressKitUrl?: string;
-  portfolioUrl?: string;
-  contentLibraryUrl?: string;
-  productPages?: string[];
-  description: string;
-  role?: string;
-  items?: { name: string; type: 'product' | 'service' }[];
-}
 
 export const createBasicCompany = async (
   userId: string,
