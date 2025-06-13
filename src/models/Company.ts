@@ -1,24 +1,6 @@
 // src\models\Company.ts
-import { Document, model, Schema, Types} from 'mongoose';
-
-export interface ICompany extends Document {
-  _id: Types.ObjectId;
-  name: string;
-  industry: string;
-  size?: string;
-  type?: string;
-  targetMarket: string;
-  description: string;
-  address?: string;
-  website?: string;
-  socialLinks?: string[];
-  brandGuideUrl?: string;
-  logoAssetsUrl?: string;
-  pressKitUrl?: string;
-  portfolioUrl?: string;
-  contentLibraryUrl?: string;
-  productPages?: string[];
-}
+import { model, Schema } from 'mongoose';
+import { ICompany } from '@/interfaces/models/ICompany';
 
 const CompanySchema = new Schema<ICompany>(
   {

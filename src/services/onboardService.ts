@@ -1,5 +1,6 @@
 // src\services\onboardService.ts
-import Company, {ICompany} from '../models/Company';
+import  {ICompany} from '@/interfaces/models/ICompany';
+import Company from '@/models/Company';
 import Progress, {IProgress} from '../models/Progress';
 import CompanyMember from '../models/CompanyMember';
 import Item from '../models/Items'; // 👈 Add this import

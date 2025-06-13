@@ -15,6 +15,7 @@ import campaignRoute from './routes/campaignRoutes';
 
 const app = express();
 
+
 app.use(cors({
   origin: process.env.CORS_ORIGIN,
   credentials: true,}));
@@ -31,9 +32,6 @@ app.use('/sync', syncRoute);
 app.use('/patch', syncRoute);
 app.use('/campaigns', campaignOverviewRoutes);
 app.use('/campaigns', campaignRoute);
-
-
-
 
 
 export default app;

@@ -1,8 +1,8 @@
-// src\controllers\campaignController.ts
+// src/controllers/campaignController.ts
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import Campaign from '../models/sync-models/campaign-sync/CampaignSync';
-import { AuthUserReq } from '../interfaces/AuthUser';
+import { attachItemToCampaignById } from '@/services/campaignService';
+import { AuthUserReq } from '@/interfaces/AuthUser';
 
 export const attachItemToCampaign = asyncHandler(async (req: Request, res: Response): Promise<void> => {
   const user = (req as AuthUserReq).user;
@@ -19,21 +19,15 @@ export const attachItemToCampaign = asyncHandler(async (req: Request, res: Respo
 
   console.log('📦 PATCH /campaigns/:id/item', { userId, companyId, campaignId, itemId });
 
-  if (!itemId) {
-    res.status(400).json({ error: 'Missing itemId' });
-    return;
+  try {
+    const updated = await attachItemToCampaignById(campaignId, itemId, userId, companyId);
+    if (!updated) {
+      res.status(404).json({ error: 'Campaign not found or not owned by user' });
+      return;
+    }
+
+    res.json(updated);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
   }
-
-  const updated = await Campaign.findOneAndUpdate(
-    { _id: campaignId, userId, companyId }, // add companyId check for safety
-    { itemId },
-    { new: true }
-  );
-
-  if (!updated) {
-    res.status(404).json({ error: 'Campaign not found or not owned by user' });
-    return;
-  }
-
-  res.json(updated);
 });
