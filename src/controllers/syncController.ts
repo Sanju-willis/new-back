@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import Company from '../models/Company';
 import { AuthUserReq } from '../interfaces/AuthUser';
-import Item from '../models/Items'; // 👈 Add this with other imports
+import Item from '../models/Items'; 
 
 
 export const getCompany = asyncHandler(async (req: Request, res: Response) => {
