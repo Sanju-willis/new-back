@@ -1,5 +1,4 @@
 // src\models\model-inter\BaseInter.ts
-// src\interfaces\models\IAuthMethod.ts
 import { Document, Types } from 'mongoose';
 
 export interface IUser extends Document {

@@ -3,7 +3,7 @@ import  {ICompany, IProgress} from '@/models/model-inter/BaseInter';
 import Company from '@/models/Company';
 import Progress from '../models/Progress';
 import CompanyMember from '../models/CompanyMember';
-import Item from '../models/Items'; // 👈 Add this import
+import Item from '../models/Items'; 
 import { BasicCompanyInput } from '@/interfaces/services/OnboardService';
 import { ConflictError } from '@/errors/Errors';
 

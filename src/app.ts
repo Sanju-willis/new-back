@@ -14,9 +14,7 @@ import campaignRoute from './routes/campaignRoutes';
 
 import { errorHandler } from './middlewares/errorHandler';
 
-
 const app = express();
-
 
 app.use(cors({
   origin: process.env.CORS_ORIGIN,
@@ -36,6 +34,5 @@ app.use('/campaigns', campaignOverviewRoutes);
 app.use('/campaigns', campaignRoute);
 
 app.use(errorHandler);
-
 
 export default app;

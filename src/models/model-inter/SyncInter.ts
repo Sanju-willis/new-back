@@ -13,7 +13,7 @@ export interface IBusinessManager extends Document {
 export interface IAdAccount extends Document {
   companyId: Types.ObjectId;
   userId: Types.ObjectId;
-  businessManagerId: Types.ObjectId; // 🔗 Reference to BusinessManager model
+  businessManagerId: Types.ObjectId; 
   adAccountId: string;
   name: string;
   currency: string;
@@ -29,6 +29,7 @@ export interface IPageSync extends Document {
   accessToken: string;
   companyId: Types.ObjectId;
 }
+
 export interface IPostSync extends Document {
     companyId: Types.ObjectId;
   pageId: Types.ObjectId;
