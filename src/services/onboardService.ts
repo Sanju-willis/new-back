@@ -1,8 +1,7 @@
 // src\services\onboardService.ts
-import  {ICompany} from '@/interfaces/models/ICompany';
+import  {ICompany, IProgress} from '@/models/model-inter/BaseInter';
 import Company from '@/models/Company';
 import Progress from '../models/Progress';
-import {IProgress } from '@/interfaces/models/IProgress';
 import CompanyMember from '../models/CompanyMember';
 import Item from '../models/Items'; // 👈 Add this import
 import { BasicCompanyInput } from '@/interfaces/services/OnboardService';

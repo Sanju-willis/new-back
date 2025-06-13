@@ -1,8 +1,8 @@
 // src\services\sync-services\campaign-services\adCreativeService.ts
 import axios from 'axios';
-import AuthMethod from '../../../models/AuthMethod';
-import AdCreative from '../../../models/sync-models/campaign-sync/AdCreativeSync';
-import Ad from '../../../models/sync-models/campaign-sync/AdSync';
+import AuthMethod from '@/models/AuthMethod';
+import AdCreative from '@/models/sync-models/campaign-sync/AdCreativeSync';
+import Ad from '@/models/sync-models/campaign-sync/AdSync';
 
 export async function syncAdCreatives(companyId: string, userId: string) {
   const auth = await AuthMethod.findOne({ userId, type: 'facebook' });

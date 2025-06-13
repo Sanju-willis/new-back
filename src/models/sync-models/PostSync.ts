@@ -1,14 +1,7 @@
 // src\models\sync-models\PostSync.ts
-import { Schema, model, Document, Types } from 'mongoose';
 
-export interface IPostSync extends Document {
-    companyId: Types.ObjectId;
-  pageId: Types.ObjectId;
-  postId: string;
-  message?: string;
-  createdTime: Date;
-  permalinkUrl?: string;
-}
+import { Schema, model } from 'mongoose';
+import { IPostSync } from '@/models/model-inter/SyncInter';
 
 const PostSchema = new Schema<IPostSync>(
   {

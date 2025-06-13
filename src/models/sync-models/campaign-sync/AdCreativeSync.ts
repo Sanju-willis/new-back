@@ -1,18 +1,7 @@
 // src\models\sync-models\campaign-sync\AdCreativeSync.ts
-import { Schema, model, Types, Document } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { IAdCreative } from '@/models/model-inter/CampaignInter';
 
-export interface IAdCreative extends Document {
-  adCreativeId: string;
-  adId: Types.ObjectId;
-  adAccountId: Types.ObjectId;
-  name?: string;
-  title?: string;
-  body?: string;
-  image_url?: string;
-  object_story_spec?: any;
-  companyId: Types.ObjectId;
-  userId: Types.ObjectId;
-}
 
 const AdCreativeSchema = new Schema<IAdCreative>({
   adCreativeId: { type: String, required: true, unique: true },

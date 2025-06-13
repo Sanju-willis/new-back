@@ -1,6 +1,6 @@
 // src\models\AuthMethod.ts
 import  { Schema, model, Document, Types} from 'mongoose';
-import {IAuthMethod } from '@/models/model-inter/inter';
+import {IAuthMethod } from '@/models/model-inter/BaseInter';
 
 const AuthMethodSchema = new Schema<IAuthMethod>(
   {

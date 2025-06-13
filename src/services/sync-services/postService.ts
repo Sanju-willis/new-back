@@ -15,7 +15,7 @@ export async function syncUserPosts(companyId: string, userId: string) {
 
     for (const page of pages) {
       const res = await axios.get(
-        `https://graph.facebook.com/v18.0/${page.pageId}/posts?access_token=${page.accessToken}`
+        `https://graph.facebook.com/v22.0/${page.pageId}/posts?access_token=${page.accessToken}`
       );
 
       const posts = res.data?.data || [];

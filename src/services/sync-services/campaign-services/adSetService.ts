@@ -1,9 +1,9 @@
 // src\services\sync-services\campaign-services\adSetService.ts
 import axios from 'axios';
-import AuthMethod from '../../../models/AuthMethod';
-import AdSet from '../../../models/sync-models/campaign-sync/AdSetSync';
-import AdAccount from '../../../models/sync-models/AdAccountSync';
-import Campaign from '../../../models/sync-models/campaign-sync/CampaignSync';
+import AuthMethod from '@/models/AuthMethod';
+import AdSet from '@/models/sync-models/campaign-sync/AdSetSync';
+import AdAccount from '@/models/sync-models/AdAccountSync';
+import Campaign from '@/models/sync-models/campaign-sync/CampaignSync';
 
 export async function syncAdSets(companyId: string, userId: string) {
   const auth = await AuthMethod.findOne({ userId, type: 'facebook' });

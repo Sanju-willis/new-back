@@ -1,19 +1,6 @@
 // src\models\sync-models\campaign-sync\CampaignSync.ts
-import { Schema, model, Types, Document } from 'mongoose';
-
-export interface ICampaign extends Document {
-  companyId: Types.ObjectId;
-  userId: Types.ObjectId;
-  businessManagerId: Types.ObjectId;
-  adAccountId: Types.ObjectId;
-  campaignId: string;
-  name: string;
-  objective: string;
-  status: string;
-  startTime?: Date;
-  stopTime?: Date;
-  itemId?:Types.ObjectId;
-}
+import { Schema, model } from 'mongoose';
+import { ICampaign } from '@/models/model-inter/CampaignInter';
 
 const CampaignSchema = new Schema<ICampaign>({
   companyId: { type: Schema.Types.ObjectId, ref: 'Company', required: true },

@@ -1,8 +1,8 @@
 // src\services\sync-services\campaign-services\campaignService.ts
 import axios from 'axios';
-import AuthMethod from '../../../models/AuthMethod';
-import Campaign from '../../../models/sync-models/campaign-sync/CampaignSync';
-import AdAccount from '../../../models/sync-models/AdAccountSync';
+import AuthMethod from '@/models/AuthMethod';
+import Campaign from '@/models/sync-models/campaign-sync/CampaignSync';
+import AdAccount from '@/models/sync-models/AdAccountSync';
 
 export async function syncCampaigns(companyId: string, userId: string) {
   const auth = await AuthMethod.findOne({ userId, type: 'facebook' });

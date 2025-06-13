@@ -1,19 +1,6 @@
 // src\models\sync-models\campaign-sync\InsightSync.ts
-import { Schema, model, Types, Document } from 'mongoose';
-
-export interface IInsight extends Document {
-  companyId: Types.ObjectId;
-  userId: Types.ObjectId;
-  businessManagerId: Types.ObjectId;
-  adAccountId: Types.ObjectId;
-  adId: Types.ObjectId;
-  adSetId?: Types.ObjectId | null;
-  campaignId?: Types.ObjectId | null;
-  impressions: number;
-  clicks: number;
-  spend: number;
-  date: Date;
-}
+import { Schema, model } from 'mongoose';
+import { IInsight } from '@/models/model-inter/CampaignInter';
 
 const InsightSchema = new Schema<IInsight>({
   companyId: { type: Schema.Types.ObjectId, ref: 'Company', required: true },

@@ -1,17 +1,6 @@
 // src\models\sync-models\campaign-sync\AdSync.ts
-import { Schema, model, Types, Document } from 'mongoose';
-
-export interface IAd extends Document {
-  companyId: Types.ObjectId;
-  userId: Types.ObjectId;
-  businessManagerId: Types.ObjectId;
-  adAccountId: Types.ObjectId;
-  adSetId: Types.ObjectId;
-  adId: string;
-  creativeId: string;
-  name: string;
-  status: string;
-}
+import { Schema, model } from 'mongoose';
+import { IAd } from '@/models/model-inter/CampaignInter';
 
 const AdSchema = new Schema<IAd>({
   companyId: { type: Schema.Types.ObjectId, ref: 'Company', required: true },

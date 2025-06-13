@@ -1,6 +1,6 @@
 // src\models\Progress.ts
 import  { Schema, model } from 'mongoose';
-import {IProgress} from '@/models/model-inter/inter';
+import {IProgress} from '@/models/model-inter/BaseInter';
 
 const ProgressSchema = new Schema<IProgress>(
   {

@@ -1,14 +1,7 @@
 // src\models\sync-models\PageSync.ts
-import { Schema, model, Document, Types } from 'mongoose';
 
-export interface IPageSync extends Document {
-  businessManagerId: Types.ObjectId;
-  pageId: string;
-  name: string;
-  category?: string;
-  accessToken: string;
-  companyId: Types.ObjectId;
-}
+import { Schema, model } from 'mongoose';
+import { IPageSync } from '@/models/model-inter/SyncInter';
 
 const PageSchema = new Schema<IPageSync>(
   {

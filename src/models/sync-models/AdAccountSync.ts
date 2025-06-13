@@ -1,16 +1,6 @@
 // src\models\sync-models\AdAccountSync.ts
-import { Schema, model, Types, Document } from 'mongoose';
-
-export interface IAdAccount extends Document {
-  companyId: Types.ObjectId;
-  userId: Types.ObjectId;
-  businessManagerId: Types.ObjectId; // 🔗 Reference to BusinessManager model
-  adAccountId: string;
-  name: string;
-  currency: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { Schema, model } from 'mongoose';
+import { IAdAccount } from '@/models/model-inter/SyncInter';
 
 const AdAccountSchema = new Schema<IAdAccount>({
   companyId: { type: Schema.Types.ObjectId, ref: 'Company', required: true },

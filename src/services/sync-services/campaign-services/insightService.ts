@@ -1,11 +1,11 @@
 // src\services\sync-services\campaign-services\insightService.ts
 
 import axios from 'axios';
-import AuthMethod from '../../../models/AuthMethod';
-import Insight from '../../../models/sync-models/campaign-sync/InsightSync';
-import Ad from '../../../models/sync-models/campaign-sync/AdSync';
-import AdSet from '../../../models/sync-models/campaign-sync/AdSetSync';
-import Campaign from '../../../models/sync-models/campaign-sync/CampaignSync';
+import AuthMethod from '@/models/AuthMethod';
+import Insight from '@/models/sync-models/campaign-sync/InsightSync';
+import Ad from '@/models/sync-models/campaign-sync/AdSync';
+import AdSet from '@/models/sync-models/campaign-sync/AdSetSync';
+import Campaign from '@/models/sync-models/campaign-sync/CampaignSync';
 
 export async function syncInsights(companyId: string, userId: string) {
   const auth = await AuthMethod.findOne({ userId, type: 'facebook' });

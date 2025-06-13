@@ -1,14 +1,7 @@
 // src\models\sync-models\BmSync.ts
-import { Schema, model, Types, Document } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { IBusinessManager } from '@/models/model-inter/SyncInter';
 
-export interface IBusinessManager extends Document {
-  companyId: Types.ObjectId;
-  userId: Types.ObjectId;
-  businessId: string;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
 
 const BusinessManagerSchema = new Schema<IBusinessManager>({
   companyId: { type: Schema.Types.ObjectId, ref: 'Company', required: true },
