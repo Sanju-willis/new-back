@@ -1,16 +1,6 @@
 // src\ai\stepTemplates.ts
-import { StageTypes, StepTypes } from '../interfaces/chatService';
+import { StepPromptMap  } from '../interfaces/chatService';
 
-type PromptTemplate = {
-  prompt: (ctx: { name: string; companyId?: string }) => string;
-  model?: string;
-};
-
-type StepPromptMap = {
-  [stage in StageTypes]?: {
-    [step in StepTypes]?: PromptTemplate;
-  };
-};
 
 export const stepPrompts: StepPromptMap = {
   create_company: {

@@ -2,6 +2,7 @@
 export type StageTypes = 'create_company' | 'company_created';
 export type StepTypes = 'form_opened' | 'company_name' | 'industry' | 'role' | 'resume';
 
+
 export type PromptBuilder = (
   user: { name: string; companyId?: string },
   step: StepTypes,
@@ -34,3 +35,14 @@ export interface  AssistantReply {
   stage: string;
   step: string;
 }
+
+export type PromptTemplate = {
+  prompt: (ctx: { name: string; companyId?: string }) => string;
+  model?: string;
+};
+
+export type StepPromptMap = {
+  [stage in StageTypes]?: {
+    [step in StepTypes]?: PromptTemplate;
+  };
+};
