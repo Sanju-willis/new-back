@@ -1,8 +1,7 @@
 // src\services\chatService.ts
 import { openai } from '../config/openai';
 import { stepPrompts } from '../ai/stepTemplates';
-import { assistantReplyParams, AssistantReply } from '../interfaces/assistReply';
-import { StageTypes, StepTypes } from '../interfaces/agentRouter';
+import { assistantReplyParams, AssistantReply, StageTypes, StepTypes } from '../interfaces/chatService';
 import { getChatHistory, saveChatHistory } from '../utils/chatHistory';
 
 const stageFlowMap: Record<StageTypes, StepTypes[]> = {
@@ -38,14 +37,11 @@ export async function assistantReply({ msg = '', stage, step, user }: assistantR
   const resolvedStage = (stage ?? 'create_company') as StageTypes;
   const resolvedStep = (step ?? 'form_opened') as StepTypes;
 
-  console.log('📩 Incoming request:', { msg, stage, step, user });
 
   const template = stepPrompts?.[resolvedStage]?.[resolvedStep];
   const prompt = template?.prompt?.({ name: user.name, companyId: user.companyId }) ?? `User (${user.name}) is interacting. Provide helpful guidance.`;
   const model = template?.model ?? 'gpt-3.5-turbo';
 
-  console.log('🧠 Using model:', model);
-  console.log('💬 Prompt sent:', prompt);
 
   let history = await getChatHistory(user._id);
   history = injectSystemPrompt(history);
@@ -75,7 +71,6 @@ export async function assistantReply({ msg = '', stage, step, user }: assistantR
   });
 
   const reply = aiReply.choices[0].message.content ?? 'No response.';
-  console.log('🤖 Assistant reply:', reply);
 
   history.push({ role: 'assistant', content: reply });
   await saveChatHistory(user._id, history);

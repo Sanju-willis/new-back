@@ -1,5 +1,5 @@
 // src\ai\stepTemplates.ts
-import { StageTypes, StepTypes } from '../interfaces/agentRouter';
+import { StageTypes, StepTypes } from '../interfaces/chatService';
 
 type PromptTemplate = {
   prompt: (ctx: { name: string; companyId?: string }) => string;

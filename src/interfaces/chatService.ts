@@ -1,4 +1,4 @@
-// src\interfaces\agentRouter.ts
+// src\interfaces\chatService.ts
 export type StageTypes = 'create_company' | 'company_created';
 export type StepTypes = 'form_opened' | 'company_name' | 'industry' | 'role' | 'resume';
 
@@ -17,3 +17,20 @@ export type AgentRouter = {
     [S in StepTypes]?: PromptBuilder;
   };
 };
+
+export interface assistantReplyParams{
+    msg?: string;
+  stage?: string;
+  step?: string;
+  user: {
+    _id: string;
+    name: string;
+    companyId?: string;
+  };
+}
+
+export interface  AssistantReply {
+  reply: string;
+  stage: string;
+  step: string;
+}
