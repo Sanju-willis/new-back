@@ -16,3 +16,5 @@ export { default as AdSet } from './sync-models/campaign-sync/AdSetSync';
 export { default as Ad } from './sync-models/campaign-sync/AdSync';4
 export { default as AdCreative } from './sync-models/campaign-sync/AdCreativeSync';
 export { default as Insight } from './sync-models/campaign-sync/InsightSync';
+
+export { PageInsight } from './sync-models/insights-models/PageInsight';

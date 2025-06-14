@@ -12,7 +12,7 @@ export async function syncCampaigns(companyId: string, userId: string) {
 
   for (const acct of adAccounts) {
     const fbId = acct.adAccountId.replace(/^act_/, '');
-    const url = `https://graph.facebook.com/v18.0/act_${fbId}/campaigns?fields=name,objective,status,start_time,stop_time&access_token=${auth.accessToken}`;
+    const url = `https://graph.facebook.com/v22.0/act_${fbId}/campaigns?fields=name,objective,status,start_time,stop_time&access_token=${auth.accessToken}`;
 
     try {
       const { data } = await axios.get(url);

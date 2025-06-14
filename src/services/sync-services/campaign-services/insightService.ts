@@ -1,3 +1,4 @@
+// src\services\sync-services\campaign-services\insightService.ts
 import axios from 'axios';
 import { AuthMethod, Insight, Ad, AdSet, Campaign } from '@/models';
 

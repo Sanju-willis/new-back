@@ -1,22 +1,20 @@
 // src\services\sync-services\pageService.ts
 import axios from 'axios';
 import { PageSync, AuthMethod } from '@/models';
+import { fetchUserManagedPages } from '@/utils/facebookApi';
+import { UnauthorizedError } from '@/errors/Errors';
 
 
 export async function syncFacebookPages(companyId: string, userId: string) {
   try {
     const auth = await AuthMethod.findOne({ userId, type: 'facebook' });
-    if (!auth?.accessToken) {
-      throw new Error('Facebook access token not found for user');
-    }
+   if (!auth?.accessToken) {
+  throw new UnauthorizedError('Missing Facebook access token');
+}
 
     const accessToken = auth.accessToken;
 
-    const fbRes = await axios.get(
-      `https://graph.facebook.com/v18.0/me/accounts?access_token=${accessToken}`
-    );
-
-    const pages = fbRes.data?.data || [];
+   const pages = await fetchUserManagedPages(accessToken);
 
     for (const page of pages) {
       const pageData = {
