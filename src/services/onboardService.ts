@@ -1,11 +1,11 @@
 // src\services\onboardService.ts
 import  {ICompany, IProgress} from '@/models/model-inter/BaseInter';
 import { Progress, Company, Item, CompanyMember } from '@/models';
-import { BasicCompanyInput } from '@/interfaces/services/OnboardService';
+import { CompanyInput } from '@/interfaces/services/OnboardService';
 import { ConflictError } from '@/errors/Errors';
 
 
-export const createBasicCompany = async ( userId: string, data: BasicCompanyInput): Promise<{ company: ICompany; progress: IProgress }> => {
+export const createBasicCompany = async ( userId: string, data: CompanyInput): Promise<{ company: ICompany; progress: IProgress }> => {
   const existingMembership = await CompanyMember.findOne({ userId });
   if (existingMembership) throw new ConflictError('User is already part of a company.');
 

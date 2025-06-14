@@ -1,6 +1,6 @@
 // src\interfaces\services\OnboardService.ts
 
-export interface BasicCompanyInput {
+export interface CompanyInput {
   companyName: string;
   industry?: string;
   size?: string;
