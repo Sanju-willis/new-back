@@ -1,5 +1,5 @@
 // src\services\campaignService.ts
-import Campaign from '@/models/sync-models/campaign-sync/CampaignSync';
+import{ Campaign } from '@/models';
 import { BadRequestError, NotFoundError } from '@/errors/Errors';
 
 

@@ -1,11 +1,8 @@
 // src\services\authService.ts
-import User from '../models/User';
+import {User, AuthMethod, CompanyMember, Progress }from '@/models';
 import {IUser } from '@/models/model-inter/BaseInter';
-import AuthMethod from '../models/AuthMethod';
 import { Profile } from 'passport-facebook';
 import { dataLog } from '../utils/debuglog';
-import CompanyMember from '../models/CompanyMember';
-import Progress from '../models/Progress';
 import { BadRequestError, NotFoundError } from '@/errors/Errors';
 
 

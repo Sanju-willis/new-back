@@ -1,9 +1,6 @@
 // src\services\onboardService.ts
 import  {ICompany, IProgress} from '@/models/model-inter/BaseInter';
-import Company from '@/models/Company';
-import Progress from '../models/Progress';
-import CompanyMember from '../models/CompanyMember';
-import Item from '../models/Items'; 
+import { Progress, Company, Item, CompanyMember } from '@/models';
 import { BasicCompanyInput } from '@/interfaces/services/OnboardService';
 import { ConflictError } from '@/errors/Errors';
 

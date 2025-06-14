@@ -1,7 +1,7 @@
 // src\services\sync-services\pageService.ts
 import axios from 'axios';
-import PageSync from '../../models/sync-models/PageSync';
-import AuthMethod from '../../models/AuthMethod';
+import { PageSync, AuthMethod } from '@/models';
+
 
 export async function syncFacebookPages(companyId: string, userId: string) {
   try {

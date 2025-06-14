@@ -1,8 +1,7 @@
 // src\services\sync-services\adAccountService.ts
 import axios from 'axios';
-import AuthMethod from '../../models/AuthMethod';
-import AdAccount from '../../models/sync-models/AdAccountSync';
-import BusinessManager from '../../models/sync-models/BmSync';
+import { AuthMethod, AdAccount, BmSync as BusinessManager } from '@/models';
+
 
 export async function syncAdAccounts(companyId: string, userId: string) {
   try {

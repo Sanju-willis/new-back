@@ -1,8 +1,7 @@
 // src\services\sync-services\postService.ts
 import axios from 'axios';
-import AuthMethod from '../../models/AuthMethod';
-import PageSync from '../../models/sync-models/PageSync';
-import PostSync from '../../models/sync-models/PostSync';
+import { AuthMethod, PageSync, PostSync } from '@/models';
+
 
 export async function syncUserPosts(companyId: string, userId: string) {
   try {

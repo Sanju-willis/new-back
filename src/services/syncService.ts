@@ -1,6 +1,5 @@
 // src\services\syncService.ts
-import Company from '../models/Company';
-import Item from '../models/Items';
+import { Company, Item }from '../models';
 
 // Company Services
 export const findCompanyById = async (companyId: string) => {
