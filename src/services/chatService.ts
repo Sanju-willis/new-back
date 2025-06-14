@@ -1,4 +1,4 @@
-// src/services/chatService.ts
+// src\services\chatService.ts
 
 import { openai } from '../config/openai';
 import { stepPrompts } from '../ai/stepTemplates';
@@ -49,13 +49,9 @@ export async function assistantReply({
   history = injectSystemPrompt(history);
 
   const cleanMsg = msg.trim();
-  if (!cleanMsg || isPromptLike(cleanMsg)) {
-    return {
-      reply: `👋 Hey ${user.name}, ready to begin your company onboarding?`,
-      stage: resolvedStage,
-      step: 'form_opened',
-    };
-  }
+ if (!cleanMsg || isPromptLike(cleanMsg)) {
+  history.push({ role: 'user', content: prompt });
+}
 
   history.push({ role: 'user', content: cleanMsg });
 

@@ -1,5 +1,3 @@
-// src\services\sync-services\campaign-services\insightService.ts
-
 import axios from 'axios';
 import { AuthMethod, Insight, Ad, AdSet, Campaign } from '@/models';
 
@@ -17,7 +15,23 @@ export async function syncInsights(companyId: string, userId: string) {
       const { data } = await axios.get(url, {
         params: {
           access_token: accessToken,
-          fields: 'impressions,clicks,spend,date_start',
+          fields: [
+            'ad_name',
+            'impressions',
+            'clicks',
+            'ctr',
+            'cpc',
+            'cpm',
+            'spend',
+            'reach',
+            'frequency',
+            'conversions',
+            'conversion_values',
+            'quality_ranking',
+            'engagement_rate_ranking',
+            'date_start',
+            'date_stop',
+          ].join(','),
           date_preset: 'maximum',
         },
       });
@@ -28,7 +42,6 @@ export async function syncInsights(companyId: string, userId: string) {
         continue;
       }
 
-      // Fetch AdSet to get campaignId
       const adSet = await AdSet.findById(ad.adSetId);
       if (!adSet) {
         console.warn(`⚠️ AdSet not found for Ad ${ad.adId}`);
@@ -50,6 +63,15 @@ export async function syncInsights(companyId: string, userId: string) {
         impressions: parseInt(insight.impressions || '0'),
         clicks: parseInt(insight.clicks || '0'),
         spend: parseFloat(insight.spend || '0'),
+        reach: parseInt(insight.reach || '0'),
+        frequency: parseFloat(insight.frequency || '0'),
+        ctr: parseFloat(insight.ctr || '0'),
+        cpc: parseFloat(insight.cpc || '0'),
+        cpm: parseFloat(insight.cpm || '0'),
+        conversions: parseInt(insight.conversions || '0'),
+        conversionValue: parseFloat(insight.conversion_values || '0'),
+        qualityRanking: insight.quality_ranking || null,
+        engagementRateRanking: insight.engagement_rate_ranking || null,
         date: new Date(insight.date_start),
         companyId,
         userId,
@@ -61,7 +83,6 @@ export async function syncInsights(companyId: string, userId: string) {
         { upsert: true }
       );
 
-    //  console.log(`📈 Synced Insight for Ad ${ad.adId} (${doc.date.toDateString()})`);
     } catch (err: any) {
       console.error(`❌ Failed to sync insights for Ad ${ad.adId}`, err?.response?.data || err.message);
     }

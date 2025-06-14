@@ -60,8 +60,26 @@ export interface IInsight extends Document {
   adId: Types.ObjectId;
   adSetId?: Types.ObjectId | null;
   campaignId?: Types.ObjectId | null;
+
+  // Core performance
   impressions: number;
   clicks: number;
   spend: number;
+
+  // Extended performance
+  reach: number;
+  frequency: number;
+  ctr: number;
+  cpc: number;
+  cpm: number;
+
+  // Conversion data (optional)
+  conversions?: number;
+  conversionValue?: number;
+
+  // Quality metrics (optional)
+  qualityRanking?: string | null;
+  engagementRateRanking?: string | null;
+
   date: Date;
 }

@@ -29,12 +29,26 @@ Only ask one question at a time. Wait for user input. Keep replies under 20 word
 
   company_created: {
     form_opened: {
-      prompt: ({ name }) => `🎉 ${name}, your company is created. Click "Products" to continue.`,
-      model: 'gpt-3.5-turbo',
+      prompt: ({ name }) => `
+Welcome back ${name}, your company profile is created.
+
+Ask the user to:
+- Add or review products/services
+- Assign categories
+- Describe offerings
+- Upload visuals
+
+Take it step by step. Only ask one thing at a time. Be clear and concise (under 20 words).
+      `,
+      model: 'gpt-4o',
     },
     resume: {
-      prompt: ({ name }) => `👋 ${name}, ready to continue? Let’s list your products.`,
-      model: 'gpt-3.5-turbo',
+      prompt: ({ name }) => `
+Hi ${name}, ready to continue product onboarding?
+
+Ask the next product detail needed. Keep it brief and helpful.
+      `,
+      model: 'gpt-4o',
     },
   },
 };
