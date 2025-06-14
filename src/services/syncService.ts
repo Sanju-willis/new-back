@@ -31,3 +31,13 @@ export const updateItemById = async (companyId: string, itemId: string, data: Pa
     { new: true }
   );
 };
+
+export const createItemForCompany = async (companyId: string, data: any) => {
+  const item = new Item({ ...data, companyId });
+  return await item.save();
+};
+
+export const deleteItemById = async (companyId: string, itemId: string) => {
+  const result = await Item.findOneAndDelete({ _id: itemId, companyId });
+  return result;
+};

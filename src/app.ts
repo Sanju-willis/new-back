@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 import authRoute from './routes/authRoute';
 import chatRoute from './routes/chatRoute';
 import { dataLog } from './utils/debuglog';
-import onboardRouter from './routes/onboardRoute';
+import onboardRoute from './routes/onboardRoute';
 import syncRoute from './routes/syncRoute';
 import campaignOverviewRoutes from './routes/campaignOverviewRoutes'
 import campaignRoute from './routes/campaignRoutes';
@@ -27,7 +27,7 @@ app.use(cookieParser());
 // Routes
 app.use('/auth', authRoute);
 app.use('/chat', chatRoute);
-app.use('/onboard', onboardRouter);
+app.use('/onboard', onboardRoute);
 app.use('/sync', syncRoute);
 app.use('/patch', syncRoute);
 app.use('/campaigns', campaignOverviewRoutes);

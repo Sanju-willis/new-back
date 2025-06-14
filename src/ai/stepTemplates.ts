@@ -4,7 +4,7 @@ import { StepPromptMap } from '../interfaces/services/chatService';
 export const stepPrompts: StepPromptMap = {
   create_company: {
     form_opened: {
-      prompt: ({ name }) => `🎉 Welcome ${name}! Let’s set up your company.\n\nWe'll ask for:\n- Company name → Industry → Market → Description → Role\n\n⚠️ Keep replies short — max 20 words.`,
+      prompt: ({ name }) => `User just signed up. Welcome the user ${name}! Let’s set up your company.\n\nWe'll ask for:\n- Company name → Industry → Market → Description → Role\n\n⚠️ Keep replies short — max 20 words.`,
       model: 'gpt-3.5-turbo',
     },
     company_name: {

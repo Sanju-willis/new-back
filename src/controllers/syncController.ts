@@ -2,7 +2,8 @@
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { AuthUserReq } from '@/interfaces/AuthUser';
-import { findCompanyById, updateCompanyById, getCompanyItems, updateItemById,} from '@/services/syncService';
+import { findCompanyById, updateCompanyById, getCompanyItems, updateItemById, createItemForCompany,
+  deleteItemById,} from '@/services/syncService';
 import { UnauthorizedError, BadRequestError, NotFoundError } from '@/errors/Errors';
 
 
@@ -52,4 +53,28 @@ export const updateItem = asyncHandler(async (req: Request, res: Response) => {
   if (!updated) throw new NotFoundError('Item not found or unauthorized');
 
   res.json(updated);
+});
+
+export const createItem = asyncHandler(async (req: Request, res: Response) => {
+  const user = (req as AuthUserReq).user;
+  if (!user?.companyId) throw new UnauthorizedError('Missing companyId');
+
+  const { name, type, ...rest } = req.body;
+  if (!name || !type) throw new BadRequestError('Missing item name or type');
+
+  const item = await createItemForCompany(user.companyId, { name, type, ...rest });
+  res.status(201).json(item);
+});
+
+export const deleteItem = asyncHandler(async (req: Request, res: Response) => {
+  const user = (req as AuthUserReq).user;
+  const { id } = req.params;
+
+  if (!user?.companyId) throw new UnauthorizedError('Missing companyId');
+  if (!id) throw new BadRequestError('Missing item ID');
+
+  const deleted = await deleteItemById(user.companyId, id);
+  if (!deleted) throw new NotFoundError('Item not found');
+
+  res.json({ success: true });
 });

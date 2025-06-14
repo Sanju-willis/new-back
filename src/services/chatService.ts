@@ -51,7 +51,7 @@ export async function assistantReply({ msg = '', stage, step, user }: assistantR
   if (!isFallbackStep(resolvedStage, resolvedStep) && (!cleanMsg || isPromptLike(cleanMsg))) {
     console.log('🚫 Ignored message: empty or generic');
     return {
-      reply: 'Please say something meaningful to continue.',
+    reply: `👋 Hey ${user.name}, where would you like to start today?`,
       stage: resolvedStage,
       step: resolvedStep,
     };
