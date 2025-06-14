@@ -1,4 +1,4 @@
-// src\interfaces\chatService.ts
+// src\interfaces\services\chatService.ts
 export type StageTypes = 'create_company' | 'company_created';
 export type StepTypes = 'form_opened' | 'company_name' | 'industry' | 'role' | 'resume';
 

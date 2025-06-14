@@ -1,7 +1,7 @@
 // src\services\chatService.ts
 import { openai } from '../config/openai';
 import { stepPrompts } from '../ai/stepTemplates';
-import { assistantReplyParams, AssistantReply, StageTypes, StepTypes } from '../interfaces/chatService';
+import { assistantReplyParams, AssistantReply, StageTypes, StepTypes } from '../interfaces/services/chatService';
 import { getChatHistory, saveChatHistory } from '../utils/chatHistory';
 
 const stageFlowMap: Record<StageTypes, StepTypes[]> = {

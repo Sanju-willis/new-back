@@ -1,5 +1,5 @@
 // src\ai\stepTemplates.ts
-import { StepPromptMap  } from '../interfaces/chatService';
+import { StepPromptMap  } from '../interfaces/services/chatService';
 
 
 export const stepPrompts: StepPromptMap = {
