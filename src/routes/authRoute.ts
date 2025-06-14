@@ -1,7 +1,7 @@
 // src\routes\authRoute.ts
 import { Router, RequestHandler, Response } from 'express';
 import passport from 'passport';
-import { handleFacebookCallback,handleInstagramCallback, handleLoginCheck } from '@/controllers/authController';
+import { handleFacebookCallback, handleInstagramCallback } from '@/controllers/authController';
 import asyncHandler from 'express-async-handler';
 
 const router = Router();
@@ -47,7 +47,6 @@ router.get('/instagram/callback',
 );
 
 
-router.get('/login', passport.authenticate('jwt', { session: false }), handleLoginCheck);
 
  export default router;
  

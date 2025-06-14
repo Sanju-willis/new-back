@@ -11,6 +11,7 @@ import onboardRoute from './routes/onboardRoute';
 import syncRoute from './routes/syncRoute';
 import campaignOverviewRoutes from './routes/campaignOverviewRoutes'
 import campaignRoute from './routes/campaignRoutes';
+import connectRoute from './routes/connectRoute';
 
 
 import { errorHandler } from './middlewares/errorHandler';
@@ -33,6 +34,8 @@ app.use('/sync', syncRoute);
 app.use('/patch', syncRoute);
 app.use('/campaigns', campaignOverviewRoutes);
 app.use('/campaigns', campaignRoute);
+app.use('/connect', connectRoute);
+
 
 
 app.use(errorHandler);
