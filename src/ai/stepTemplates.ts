@@ -3,23 +3,30 @@ import { StepPromptMap } from '../interfaces/services/chatService';
 
 export const stepPrompts: StepPromptMap = {
   create_company: {
-    form_opened: {
-      prompt: ({ name }) => `User just signed up. Welcome the user ${name}! Let’s set up your company.\n\nWe'll ask for:\n- Company name → Industry → Market → Description → Role\n\n⚠️ Keep replies short — max 20 words.`,
-      model: 'gpt-3.5-turbo',
-    },
-    company_name: {
-      prompt: () => 'What is the name of your company?',
-      model: 'gpt-3.5-turbo',
-    },
-    industry: {
-      prompt: () => 'What industry does your company operate in?',
-      model: 'gpt-3.5-turbo',
-    },
-    role: {
-      prompt: () => 'What role do you hold in the company?',
-      model: 'gpt-3.5-turbo',
+   form_opened: {
+      prompt: ({ name }) => `
+Welcome ${name}! Let’s complete your company onboarding.
+
+Ask the user these details, one at a time:
+- Company Name
+- Industry
+- Company Size
+- Type (B2B/B2C)
+- Address
+- Website
+- Social Links
+- Brand Assets
+- Role
+- Description
+- Target Audience
+- Products or Services
+
+Only ask one question at a time. Wait for user input. Keep replies under 20 words.
+      `,
+      model: 'gpt-4o',
     },
   },
+
   company_created: {
     form_opened: {
       prompt: ({ name }) => `🎉 ${name}, your company is created. Click "Products" to continue.`,
