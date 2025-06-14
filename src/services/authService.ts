@@ -39,6 +39,34 @@ export async function handleFacebookLogin(  accessToken: string,  profile: Profi
   return user;
 }
 
+export async function handleInstagramLogin(accessToken: string, profile: Profile) {
+  const existingUser = await User.findOne({ email: profile.emails?.[0]?.value });
+
+  if (!existingUser) {
+    const newUser = await User.create({
+      name: profile.displayName,
+      email: profile.emails?.[0]?.value,
+      photo: profile.photos?.[0]?.value,
+    });
+
+    await AuthMethod.create({
+      userId: newUser._id,
+      type: 'instagram',
+      accessToken,
+    });
+
+    return newUser;
+  }
+
+  await AuthMethod.updateOne(
+    { userId: existingUser._id, type: 'instagram' },
+    { accessToken },
+    { upsert: true }
+  );
+
+  return existingUser;
+}
+
 
 export async function getLoginResponse(userId: string) {
   const user = await User.findById(userId);

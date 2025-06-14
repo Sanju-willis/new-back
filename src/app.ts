@@ -12,6 +12,7 @@ import syncRoute from './routes/syncRoute';
 import campaignOverviewRoutes from './routes/campaignOverviewRoutes'
 import campaignRoute from './routes/campaignRoutes';
 
+
 import { errorHandler } from './middlewares/errorHandler';
 
 const app = express();
@@ -32,6 +33,7 @@ app.use('/sync', syncRoute);
 app.use('/patch', syncRoute);
 app.use('/campaigns', campaignOverviewRoutes);
 app.use('/campaigns', campaignRoute);
+
 
 app.use(errorHandler);
 
