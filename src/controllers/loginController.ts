@@ -11,7 +11,7 @@ export async function handleFacebookLoginCheck(req: Request, res: Response): Pro
    if (!user) throw new UnauthorizedError();
 
 
-  const { company, progress, user: userDoc } = await handleFacebookLogin(user._id);
+  const { company, progress, user: userDoc, platforms  } = await handleFacebookLogin(user._id);
 
  //flowLog('🔄1 Auth Cookie  data:', company) ;
 
@@ -50,6 +50,7 @@ export async function handleFacebookLoginCheck(req: Request, res: Response): Pro
     },
     company,
     progress,
+    platforms ,
   };
  // console.log('DATA', responsePayload)
 

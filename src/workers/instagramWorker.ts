@@ -4,7 +4,7 @@ import { redisConnection } from '../config/redis';
 import { fetchInstagramProfile, fetchInstagramMedia, fetchInstagramInsights } from '@/services/sync-services/instagramService';
 
 export const instagramWorker = new Worker(
-  'sync-queue',
+  'instagram-sync-queue',
   async job => {
     const { name, data } = job;
 

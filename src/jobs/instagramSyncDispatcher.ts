@@ -3,7 +3,7 @@ import { syncQueue } from '../queues/syncQueue';
 import { QueueEvents } from 'bullmq';
 import { redisConnection } from '../config/redis';
 
-const queueEvents = new QueueEvents('sync-queue', {
+const queueEvents = new QueueEvents('instagram-sync-queue', {
   connection: redisConnection,
 });
 

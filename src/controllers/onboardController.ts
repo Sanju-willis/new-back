@@ -31,7 +31,7 @@ export const createCompanyController = asyncHandler(async (req: Request, res: Re
   items
 } = req.body;
 
-   const { company, progress } = await createBasicCompany(user._id, {
+   const { company, progress, platforms  } = await createBasicCompany(user._id, {
   companyName,
   industry,
   size,
@@ -73,6 +73,6 @@ export const createCompanyController = asyncHandler(async (req: Request, res: Re
     });
 
     // ✅ Respond with company and progress
-    res.status(201).json({ company, progress });
+res.status(201).json({ company, progress, platforms });
  
 });
