@@ -1,18 +1,23 @@
 // src\services\connectService.ts
 import { AuthMethod, User, CompanyMember, Progress } from '@/models';
-import {NotFoundError} from '@/errors/Errors';
+import { NotFoundError } from '@/errors/Errors';
 
 interface SaveAuthMethodParams {
   userId: string;
   companyId?: string;
-  type: string;
+  type: string; // 'facebook' | 'instagram' | 'linkedin' | etc.
   accessToken: string;
   usedForLogin: boolean;
 }
 
-export async function saveAuthMethod(params: SaveAuthMethodParams) {
-  const { userId, companyId, type, accessToken, usedForLogin } = params;
-
+// 🔐 Create or update the user's auth method
+export async function saveAuthMethod({
+  userId,
+  companyId,
+  type,
+  accessToken,
+  usedForLogin
+}: SaveAuthMethodParams) {
   const existing = await AuthMethod.findOne({ userId, type });
 
   if (existing) {
@@ -30,13 +35,11 @@ export async function saveAuthMethod(params: SaveAuthMethodParams) {
   }
 }
 
-export async function getLoginResponse(userId: string) {
+// 📦 Get response after social connection (connect callback)
+export async function getConnectResponse(userId: string) {
   const user = await User.findById(userId);
+  if (!user) throw new NotFoundError('User not found');
 
-   if (!user) throw new NotFoundError('User not found');
-
-
-  // ✅ FIXED: Use correct field name in CompanyMember lookup
   const member = await CompanyMember.findOne({ userId }).populate('companyId');
 
   if (!member || !member.companyId || typeof member.companyId === 'string') {
@@ -44,7 +47,6 @@ export async function getLoginResponse(userId: string) {
   }
 
   const company = member.companyId;
-
   const progress = await Progress.findOne({ companyId: company._id });
 
   return {

@@ -4,14 +4,13 @@ import passport from 'passport';
 import asyncHandler from 'express-async-handler';
 
 import {
-  handleFacebookCallback,
-  handleInstagramCallback,
-  handleLinkedInCallback,
-  handleTikTokCallback,
-  handleGoogleAnalyticsCallback,
-  handleYouTubeCallback,
+  handleFacebookConnectCallback,
+  handleInstagramConnectCallback,
+  handleLinkedInConnectCallback,
+  handleTikTokConnectCallback,
+  handleYouTubeConnectCallback,
+  handleGoogleAnalyticsConnectCallback
 } from '@/controllers/connectController';
-
 const router = Router();
 
 // 🔌 Facebook connection
@@ -29,7 +28,7 @@ router.get('/facebook', passport.authenticate('facebook-connect', {
 
 router.get('/facebook/callback',
   passport.authenticate('facebook-connect', { session: false }),
-  asyncHandler(handleFacebookCallback)
+  asyncHandler(handleFacebookConnectCallback)
 );
 
 // 🔌 Instagram
@@ -45,7 +44,7 @@ router.get('/instagram', passport.authenticate('instagram-connect', {
 
 router.get('/instagram/callback',
   passport.authenticate('instagram-connect', { session: false }),
-  asyncHandler(handleInstagramCallback)
+  asyncHandler( handleInstagramConnectCallback,)
 );
 
 // 🔌 LinkedIn
@@ -55,7 +54,8 @@ router.get('/linkedin', passport.authenticate('linkedin-connect', {
 
 router.get('/linkedin/callback',
   passport.authenticate('linkedin-connect', { session: false }),
-  asyncHandler(handleLinkedInCallback)
+  asyncHandler(  handleLinkedInConnectCallback,
+)
 );
 
 // 🔌 TikTok
@@ -65,7 +65,7 @@ router.get('/tiktok', passport.authenticate('tiktok-connect', {
 
 router.get('/tiktok/callback',
   passport.authenticate('tiktok-connect', { session: false }),
-  asyncHandler(handleTikTokCallback)
+  asyncHandler(handleTikTokConnectCallback )
 );
 
 // 🔌 Google Analytics
@@ -79,7 +79,7 @@ router.get('/google_analytics', passport.authenticate('google-connect', {
 
 router.get('/google_analytics/callback',
   passport.authenticate('google-connect', { session: false }),
-  asyncHandler(handleGoogleAnalyticsCallback)
+  asyncHandler(handleGoogleAnalyticsConnectCallback)
 );
 
 // 🔌 YouTube (Optional)
@@ -89,7 +89,7 @@ router.get('/youtube', passport.authenticate('youtube-connect', {
 
 router.get('/youtube/callback',
   passport.authenticate('youtube-connect', { session: false }),
-  asyncHandler(handleYouTubeCallback)
+  asyncHandler(handleYouTubeConnectCallback)
 );
 
 export default router;

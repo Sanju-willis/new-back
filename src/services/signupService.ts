@@ -39,7 +39,7 @@ export async function handleFacebookSignup(  accessToken: string,  profile: Prof
   return user;
 }
 
-export async function handleInstagramLogin(accessToken: string, profile: Profile) {
+export async function handleInstagramSignup(accessToken: string, profile: Profile) {
   const existingUser = await User.findOne({ email: profile.emails?.[0]?.value });
 
   if (!existingUser) {
