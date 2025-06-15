@@ -5,7 +5,7 @@ const InstagramMediaSchema = new mongoose.Schema({
   companyId: { type: mongoose.Schema.Types.ObjectId, ref: 'Company', required: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   platformUserId: { type: String, required: true },
-  mediaId: { type: String, required: true, unique: true },
+  platformMediaId: { type: String, required: true, unique: true }, // ✅ renamed from mediaId
   caption: String,
   media_type: String,
   media_url: String,

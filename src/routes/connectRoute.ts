@@ -39,11 +39,12 @@ router.get(
   requireUser,
   passport.authenticate('instagram-connect', {
     scope: [
-      'instagram_basic',
-      'instagram_manage_insights',
-      'pages_show_list',
-      'pages_manage_metadata',
-      'business_management',
+       'instagram_basic',
+    'instagram_manage_insights',
+    'pages_show_list',
+    'pages_read_engagement',
+    'pages_read_user_content',
+    'business_management',
     ],
   })
 );

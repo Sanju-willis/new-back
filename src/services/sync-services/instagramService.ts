@@ -11,11 +11,11 @@ interface InstagramSyncPayload {
   platformUserId: string;
 }
 
-// 🔁 Get Instagram business account ID
+// 🔁 Get Instagram Business ID via /me/accounts
 async function getInstagramBusinessId(accessToken: string): Promise<string | null> {
   console.log('🔍 Fetching Instagram Business ID from /me/accounts...');
   try {
-    const url = `https://graph.facebook.com/v18.0/me/accounts?fields=instagram_business_account&access_token=${accessToken}`;
+    const url = `https://graph.facebook.com/v22.0/me/accounts?fields=instagram_business_account&access_token=${accessToken}`;
     const { data } = await axios.get(url);
 
     const pages = data.data || [];
@@ -41,14 +41,11 @@ export async function fetchInstagramProfile({
   platformUserId,
 }: InstagramSyncPayload) {
   console.log('📡 Fetching Instagram profile...');
-  console.log('🔍 platformUserId:', platformUserId);
-  console.log('🔑 accessToken:', accessToken.slice(0, 6) + '...' + accessToken.slice(-4));
-
   const resolvedUserId = platformUserId || (await getInstagramBusinessId(accessToken));
   if (!resolvedUserId) return;
 
   try {
-    const url = `https://graph.facebook.com/v18.0/${resolvedUserId}?fields=id,username,account_type,media_count,followers_count,follows_count&access_token=${accessToken}`;
+    const url = `https://graph.facebook.com/v22.0/${resolvedUserId}?fields=id,username,media_count,followers_count&access_token=${accessToken}`;
     const { data } = await axios.get(url);
     console.log('✅ Fetched profile:', data);
 
@@ -62,13 +59,14 @@ export async function fetchInstagramProfile({
       },
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
+
     console.log('💾 Saved Instagram profile to DB:', result._id.toString());
   } catch (err: any) {
     console.error('❌ Failed to sync Instagram profile:', err.response?.data || err.message);
   }
 }
 
-// 🖼️ Sync Instagram media data
+// 🖼️ Sync Instagram media
 export async function fetchInstagramMedia({
   companyId,
   userId,
@@ -76,12 +74,11 @@ export async function fetchInstagramMedia({
   platformUserId,
 }: InstagramSyncPayload) {
   console.log('📡 Fetching Instagram media...');
-
   const resolvedUserId = platformUserId || (await getInstagramBusinessId(accessToken));
   if (!resolvedUserId) return;
 
   try {
-    const url = `https://graph.facebook.com/v18.0/${resolvedUserId}/media?fields=id,caption,media_type,media_url,permalink,timestamp,like_count,comments_count&access_token=${accessToken}`;
+    const url = `https://graph.facebook.com/v22.0/${resolvedUserId}/media?fields=id,caption,media_type,media_url,permalink,timestamp,like_count,comments_count&access_token=${accessToken}`;
     const { data } = await axios.get(url);
     const mediaItems = data.data || [];
     console.log(`✅ Fetched ${mediaItems.length} media items`);
@@ -104,7 +101,8 @@ export async function fetchInstagramMedia({
   }
 }
 
-// 📊 Sync Instagram insights data
+// 📊 Sync Instagram insights
+// 📊 Sync Instagram insights
 export async function fetchInstagramInsights({
   companyId,
   userId,
@@ -112,12 +110,18 @@ export async function fetchInstagramInsights({
   platformUserId,
 }: InstagramSyncPayload) {
   console.log('📡 Fetching Instagram insights...');
-
   const resolvedUserId = platformUserId || (await getInstagramBusinessId(accessToken));
   if (!resolvedUserId) return;
 
   try {
-    const url = `https://graph.facebook.com/v18.0/${resolvedUserId}/insights?metric=impressions,reach,profile_views&period=day&access_token=${accessToken}`;
+    const metrics = [
+      'profile_views',
+      'website_clicks',
+      'accounts_engaged',
+      'total_interactions',
+    ];
+    const query = `?metric=${metrics.join(',')}&period=day&metric_type=total_value&access_token=${accessToken}`;
+    const url = `https://graph.facebook.com/v22.0/${resolvedUserId}/insights${query}`;
     const { data } = await axios.get(url);
     const insights = data.data || [];
     console.log(`✅ Fetched ${insights.length} insight metrics`);

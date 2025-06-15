@@ -1,5 +1,5 @@
 // src\jobs\instagramSyncDispatcher.ts
-import { syncQueue } from '../queues/syncQueue';
+import { instagramSyncQueue } from '../queues/syncQueue';
 import { QueueEvents } from 'bullmq';
 import { redisConnection } from '../config/redis';
 
@@ -23,7 +23,7 @@ export async function instagramSyncDispatcher({
   try {
     console.log('🧾 Dispatching sync-instagram-profile...');
 
-    const profileJob = await syncQueue.add('sync-instagram-profile', {
+    const profileJob = await instagramSyncQueue.add('sync-instagram-profile', {
       companyId,
       userId,
       accessToken,
@@ -34,7 +34,7 @@ export async function instagramSyncDispatcher({
       if (jobId === profileJob.id) {
         console.log('✅ sync-instagram-profile finished, now dispatching sync-instagram-media');
 
-        const mediaJob = await syncQueue.add('sync-instagram-media', {
+        const mediaJob = await instagramSyncQueue.add('sync-instagram-media', {
           companyId,
           userId,
           accessToken,
@@ -45,7 +45,7 @@ export async function instagramSyncDispatcher({
           if (jobId === mediaJob.id) {
             console.log('✅ sync-instagram-media finished, now dispatching sync-instagram-insights');
 
-            await syncQueue.add('sync-instagram-insights', {
+            await instagramSyncQueue.add('sync-instagram-insights', {
               companyId,
               userId,
               accessToken,
