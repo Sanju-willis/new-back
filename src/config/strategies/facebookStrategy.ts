@@ -9,7 +9,7 @@ export const facebookSignupStrategy = new FacebookStrategy(
     clientID: process.env.FACEBOOK_APP_ID!,
     clientSecret: process.env.FACEBOOK_APP_SECRET!,
     callbackURL: process.env.FACEBOOK_SIGNUP_CALLBACK_URL!,
-    profileFields: ['id', 'displayName', 'emails'],
+    profileFields: ['id', 'displayName', 'emails', 'photos'],
     passReqToCallback: false
   },
   async (accessToken, refreshToken, profile: Profile, done) => {

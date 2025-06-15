@@ -1,57 +1,41 @@
 // src\services\connectService.ts
-import { AuthMethod, User, CompanyMember, Progress } from '@/models';
+import { User, CompanyMember, Progress, Platforms } from '@/models';
 import { NotFoundError } from '@/errors/Errors';
+import { Profile } from 'passport-facebook';
+import { AuthUserReq } from '@/interfaces/AuthUser';
+import { instagramSyncDispatcher } from '@/jobs/instagramSyncDispatcher';
 
-interface SaveAuthMethodParams {
-  userId: string;
-  companyId?: string;
-  type: string; // 'facebook' | 'instagram' | 'linkedin' | etc.
-  accessToken: string;
-  usedForLogin: boolean;
-}
+// 🔁 Save Instagram connection to ConnectedPlatform + trigger sync
+export async function handleInstagramConnect(
+  accessToken: string,
+  profile: Profile,
+  req: AuthUserReq, // 👈 full Express request object with `user`
+  refreshToken?: string,
+  expiresAt?: Date
+) {
+  const { _id, companyId } = req.user;
 
-// 🔐 Create or update the user's auth method
-export async function saveAuthMethod({
-  userId,
-  companyId,
-  type,
-  accessToken,
-  usedForLogin
-}: SaveAuthMethodParams) {
-  const existing = await AuthMethod.findOne({ userId, type });
+  if (!_id || !companyId) {
+    throw new NotFoundError('Missing user or company context');
+  }
 
-  if (existing) {
-    existing.accessToken = accessToken;
-    existing.usedForLogin = usedForLogin;
-    await existing.save();
-  } else {
-    await AuthMethod.create({
-      userId,
+  await Platforms.findOneAndUpdate(
+    { companyId, platform: 'instagram' },
+    {
       companyId,
-      type,
+      platform: 'instagram',
+      connectedBy: _id,
+      connectedAt: new Date(),
       accessToken,
-      usedForLogin,
-    });
-  }
-}
+      refreshToken,
+      expiresAt,
+      platformUserId: profile.id,
+      profile,
+    },
+    { upsert: true, new: true, setDefaultsOnInsert: true }
+  );
 
-// 📦 Get response after social connection (connect callback)
-export async function getConnectResponse(userId: string) {
-  const user = await User.findById(userId);
-  if (!user) throw new NotFoundError('User not found');
+await instagramSyncDispatcher(companyId, _id);
 
-  const member = await CompanyMember.findOne({ userId }).populate('companyId');
-
-  if (!member || !member.companyId || typeof member.companyId === 'string') {
-    return { user, company: null, progress: null };
-  }
-
-  const company = member.companyId;
-  const progress = await Progress.findOne({ companyId: company._id });
-
-  return {
-    user,
-    company,
-    progress,
-  };
+  return req.user;
 }

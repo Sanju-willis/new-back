@@ -5,6 +5,8 @@ export { default as AuthMethod } from './AuthMethod';
 export { default as CompanyMember } from './CompanyMember';
 export { default as Item } from './Items';
 export { default as Progress } from './Progress';
+export { default as Platforms } from './Platforms';
+
 
 export { default as AdAccount } from './sync-models/AdAccountSync';
 export { default as BmSync } from './sync-models/BmSync';

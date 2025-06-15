@@ -1,12 +1,11 @@
 // src\controllers\loginController.ts
-// src\controllers\authController.ts
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { handleFacebookLogin } from '../services/loginService';
 import { AuthUserReq } from '../interfaces/AuthUser';
 import { UnauthorizedError } from '@/errors/Errors';
 
-export async function handleLoginCheck(req: Request, res: Response): Promise<void> {
+export async function handleFacebookLoginCheck(req: Request, res: Response): Promise<void> {
   const { user } = req as AuthUserReq;
 
    if (!user) throw new UnauthorizedError();
@@ -52,6 +51,7 @@ export async function handleLoginCheck(req: Request, res: Response): Promise<voi
     company,
     progress,
   };
+  console.log('DATA', responsePayload)
 
   res.json(responsePayload);
 }
