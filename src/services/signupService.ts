@@ -1,4 +1,4 @@
-// src\services\authService.ts
+// src\services\signupService.ts
 import {User, AuthMethod, CompanyMember, Progress }from '@/models';
 import {IUser } from '@/models/model-inter/BaseInter';
 import { Profile } from 'passport-facebook';
@@ -6,7 +6,7 @@ import { dataLog } from '../utils/debuglog';
 import { BadRequestError, NotFoundError } from '@/errors/Errors';
 
 
-export async function handleFacebookLogin(  accessToken: string,  profile: Profile ): Promise<IUser> {
+export async function handleFacebookSignup(  accessToken: string,  profile: Profile ): Promise<IUser> {
   const email = profile.emails?.[0]?.value;
 
   if (!email) throw new BadRequestError('Facebook profile does not have an email.');
@@ -68,26 +68,3 @@ export async function handleInstagramLogin(accessToken: string, profile: Profile
 }
 
 
-export async function getLoginResponse(userId: string) {
-  const user = await User.findById(userId);
-
-   if (!user) throw new NotFoundError('User not found');
-
-
-  // ✅ FIXED: Use correct field name in CompanyMember lookup
-  const member = await CompanyMember.findOne({ userId }).populate('companyId');
-
-  if (!member || !member.companyId || typeof member.companyId === 'string') {
-    return { user, company: null, progress: null };
-  }
-
-  const company = member.companyId;
-
-  const progress = await Progress.findOne({ companyId: company._id });
-
-  return {
-    user,
-    company,
-    progress,
-  };
-}

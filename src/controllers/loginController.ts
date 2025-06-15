@@ -2,7 +2,7 @@
 // src\controllers\authController.ts
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { getLoginResponse } from '../services/authService';
+import { handleFacebookLogin } from '../services/loginService';
 import { AuthUserReq } from '../interfaces/AuthUser';
 import { UnauthorizedError } from '@/errors/Errors';
 
@@ -12,7 +12,7 @@ export async function handleLoginCheck(req: Request, res: Response): Promise<voi
    if (!user) throw new UnauthorizedError();
 
 
-  const { company, progress, user: userDoc } = await getLoginResponse(user._id);
+  const { company, progress, user: userDoc } = await handleFacebookLogin(user._id);
 
  //flowLog('🔄1 Auth Cookie  data:', company) ;
 

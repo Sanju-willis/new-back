@@ -5,7 +5,7 @@ import {IAuthMethod } from '@/models/model-inter/BaseInter';
 const AuthMethodSchema = new Schema<IAuthMethod>(
   {
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    type: { type: String, enum: ['facebook'], required: true },
+    type: { type: String, enum: ['facebook', 'instagram', 'google', 'linkedin', 'tiktok'], required: true },
     accessToken: { type: String, required: true },
     refreshToken: { type: String },
   },

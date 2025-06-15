@@ -1,6 +1,6 @@
 // src\config\strategies\linkedinStrategy.ts
 import { Strategy as LinkedInStrategy } from 'passport-linkedin-oauth2';
-import { handleLinkedInLogin } from '@/services/authService';
+import { handleLinkedInLogin } from '@/services/signupService';
 
 export const linkedinStrategy = new LinkedInStrategy(
   {

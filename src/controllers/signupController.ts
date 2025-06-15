@@ -1,4 +1,4 @@
-// src\controllers\authController.ts
+// src\controllers\signupController.ts
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { flowLog, dataLog } from '../utils/debuglog';

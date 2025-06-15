@@ -1,13 +1,13 @@
-// src\routes\authRoute.ts
+// src\routes\signupRoute.ts
 import { Router, RequestHandler, Response } from 'express';
 import passport from 'passport';
-import { handleFacebookCallback, handleInstagramCallback } from '@/controllers/authController';
+import { handleFacebookCallback, handleInstagramCallback } from '@/controllers/signupController';
 import asyncHandler from 'express-async-handler';
 
 const router = Router();
 
 // 🔹 Facebook OAuth entry
-router.get('/facebook', passport.authenticate('facebook', {
+router.get('/facebook', passport.authenticate('facebook-signup', {
   scope: [
     'email',
     'public_profile',
@@ -24,7 +24,7 @@ router.get('/facebook', passport.authenticate('facebook', {
 // 🔹 Facebook callback handler
 router.get(
   '/facebook/callback',
-  passport.authenticate('facebook', { session: false, failureRedirect: '/signup' }),
+  passport.authenticate('facebook-signup', { session: false, failureRedirect: '/signup' }),
   asyncHandler(handleFacebookCallback)
 );
 

@@ -1,6 +1,6 @@
 // src\config\strategies\tiktokStrategy.ts
 import { Strategy as TikTokStrategy } from 'passport-tiktok-auth';
-import { handleTikTokLogin } from '@/services/authService';
+import { handleTikTokLogin } from '@/services/signupService';
 
 export const tiktokStrategy = new TikTokStrategy(
   {

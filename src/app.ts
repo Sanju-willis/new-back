@@ -4,7 +4,7 @@ import cors from 'cors';
 import passport from 'passport';
 import './config/passport';
 import cookieParser from 'cookie-parser';
-import authRoute from './routes/authRoute';
+import signupRoute from './routes/signupRoute';
 import chatRoute from './routes/chatRoute';
 import { dataLog } from './utils/debuglog';
 import onboardRoute from './routes/onboardRoute';
@@ -12,6 +12,7 @@ import syncRoute from './routes/syncRoute';
 import campaignOverviewRoutes from './routes/campaignOverviewRoutes'
 import campaignRoute from './routes/campaignRoutes';
 import connectRoute from './routes/connectRoute';
+import loginRoute from './routes/loginRoute';
 
 
 import { errorHandler } from './middlewares/errorHandler';
@@ -27,7 +28,9 @@ app.use(cookieParser());
 
 
 // Routes
-app.use('/auth', authRoute);
+app.use('/signup', signupRoute);
+app.use('/login', loginRoute);
+
 app.use('/chat', chatRoute);
 app.use('/onboard', onboardRoute);
 app.use('/sync', syncRoute);

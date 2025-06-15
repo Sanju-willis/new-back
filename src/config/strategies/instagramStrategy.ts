@@ -1,6 +1,6 @@
 // src\config\strategies\instagramStrategy.ts
 import { Strategy as FacebookStrategy, Profile } from 'passport-facebook';
-import { handleInstagramLogin } from '@/services/authService';
+import { handleInstagramLogin } from '@/services/signupService';
 
 export const instagramStrategy = new FacebookStrategy(
   {

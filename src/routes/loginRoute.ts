@@ -8,6 +8,6 @@ import { handleLoginCheck } from '@/controllers/loginController';
 const router = Router();
 
 
-router.get('/login', passport.authenticate('jwt', { session: false }), handleLoginCheck);
+router.get('/facebook', passport.authenticate('jwt', { session: false }), handleLoginCheck);
 
  export default router;

@@ -1,6 +1,6 @@
 // src\config\strategies\googleAnalyticsStrategy.ts
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { handleGoogleLogin } from '@/services/authService';
+import { handleGoogleLogin } from '@/services/signupService';
 
 export const googleAnalyticsStrategy = new GoogleStrategy(
   {
