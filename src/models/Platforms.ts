@@ -1,5 +1,4 @@
-// src\models\ConnectedPlatforms.ts
-// src/models/ConnectedPlatform.ts
+// src\models\Platforms.ts
 import { Schema, model, Types, Document } from 'mongoose';
 
 export interface IConnectedPlatform extends Document {

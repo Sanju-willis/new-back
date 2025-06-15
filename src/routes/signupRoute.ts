@@ -1,7 +1,7 @@
 // src\routes\signupRoute.ts
 import { Router, RequestHandler, Response } from 'express';
 import passport from 'passport';
-import { handleFacebookCallback, handleInstagramCallback } from '@/controllers/signupController';
+import { handleFacebookSignupCallback, handleInstagramSignupCallback } from '@/controllers/signupController';
 import asyncHandler from 'express-async-handler';
 
 const router = Router();
@@ -25,7 +25,7 @@ router.get('/facebook', passport.authenticate('facebook-signup', {
 router.get(
   '/facebook/callback',
   passport.authenticate('facebook-signup', { session: false, failureRedirect: '/signup' }),
-  asyncHandler(handleFacebookCallback)
+  asyncHandler(handleFacebookSignupCallback)
 );
 
 router.get('/instagram', passport.authenticate('instagram', {
@@ -43,7 +43,7 @@ router.get('/instagram', passport.authenticate('instagram', {
 
 router.get('/instagram/callback',
   passport.authenticate('instagram', { session: false, failureRedirect: '/signup' }),
-  asyncHandler(handleInstagramCallback)
+  asyncHandler(handleInstagramSignupCallback)
 );
 
 
