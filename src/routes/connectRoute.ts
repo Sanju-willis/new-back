@@ -49,9 +49,11 @@ router.get(
 );
 router.get(
   '/instagram/callback',
-  passport.authenticate('instagram-connect', { session: false }),
-  asyncHandler(handleInstagramConnectCallback)
+  passport.authenticate('instagram-connect', { session: false }), // 1️⃣ Handle Instagram login
+  passport.authenticate('jwt', { session: false }),               // 2️⃣ Decode JWT cookie
+  asyncHandler(handleInstagramConnectCallback)                    // 3️⃣ Now req.user is available
 );
+
 
 // 🔌 LinkedIn
 router.get(

@@ -1,4 +1,4 @@
-// src/jobs/instagramSyncDispatcher.ts
+// src\jobs\instagramSyncDispatcher.ts
 import { syncQueue } from '../queues/syncQueue';
 import { QueueEvents } from 'bullmq';
 import { redisConnection } from '../config/redis';

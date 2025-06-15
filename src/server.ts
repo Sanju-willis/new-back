@@ -8,6 +8,8 @@ import app from './app';
 
 // 🛠️ Start the BullMQ worker
 import './workers/syncWorker';
+import '@/workers/instagramWorker'; 
+
 
 async function startServer() {
 

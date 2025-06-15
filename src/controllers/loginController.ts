@@ -51,7 +51,7 @@ export async function handleFacebookLoginCheck(req: Request, res: Response): Pro
     company,
     progress,
   };
-  console.log('DATA', responsePayload)
+ // console.log('DATA', responsePayload)
 
   res.json(responsePayload);
 }

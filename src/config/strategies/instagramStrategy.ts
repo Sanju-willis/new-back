@@ -4,6 +4,8 @@ import { handleInstagramSignup } from '@/services/signupService';
 import { handleInstagramLogin } from '@/services/loginService';
 import { handleInstagramConnect } from '@/services/connectService';
 import { AuthUserReq } from '@/interfaces/AuthUser';
+import jwt from 'jsonwebtoken';
+
 
 
 // 🔹 Signup strategy
@@ -68,18 +70,22 @@ export const instagramConnectStrategy = new FacebookStrategy(
   },
   async (req, accessToken, refreshToken, profile: Profile, done) => {
     try {
-      const { _id, companyId } = (req as AuthUserReq).user;
+      // 🔓 Manually extract JWT from cookie
+      const token = req.cookies?.token;
+      if (!token) return done(new Error('Missing JWT token'), false);
 
-      if (!_id || !companyId) {
-        return done(new Error('Missing authenticated user or company context'), false);
+      // 🔑 Decode JWT to get user + companyId
+      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string; companyId: string };
+
+      if (!decoded?.id || !decoded?.companyId) {
+        return done(new Error('Invalid JWT payload'), false);
       }
 
       const updatedUser = await handleInstagramConnect(
         accessToken,
         profile,
-        { _id, companyId }, // ✅ minimal AuthUser
-        refreshToken,
-        undefined // optional: expiresAt
+        { user: { _id: decoded.id, companyId: decoded.companyId } } as AuthUserReq, // 🧠 spoof user
+        refreshToken
       );
 
       return done(null, updatedUser);
