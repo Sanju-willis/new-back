@@ -35,7 +35,12 @@ export async function handleInstagramConnect(
     { upsert: true, new: true, setDefaultsOnInsert: true }
   );
 
-await instagramSyncDispatcher(companyId, _id);
+await instagramSyncDispatcher({
+  companyId,
+  userId: _id,
+  accessToken,
+  platformUserId: profile.id,
+});
 
   return req.user;
 }
